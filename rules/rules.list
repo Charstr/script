@@ -4,3 +4,8 @@ DOMAIN-KEYWORD,118.89.204.198,REJECT-DROP
 IP-CIDR,118.89.204.198/32,REJECT-DROP,no-resolve
 DOMAIN,appcloud2.in.zhihu.com,REJECT
 USER-AGENT,AVOS*,REJECT
+
+#v2ex
+host-suffix, v2ex.com, proxy
+#forest
+host-suffix, forestapp.cc, proxy
