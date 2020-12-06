@@ -1,6 +1,6 @@
 /*
 [Script]
-^https:\/\/lcs-mobile-cops\.adobe\.io\/mobile_profile url script-response-body https://raw.githubusercontent.com/langkhach270389/Quantumult-X-LK/master/Scripts/langkhach/photoshop.js
+^https:\/\/lcs-mobile-cops\.adobe\.io\/mobile_profile url script-response-body https://raw.githubusercontent.com/Charstr/script/main/script/ps.js
 [MITM]
 hostname = lcs-mobile-cops.adobe.io
 */
