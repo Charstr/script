@@ -1,17 +1,47 @@
 /*
 [Script]
 ^https:\/\/license\.pdfexpert\.com\/api\/.*\/(documents|pdfexpert6)\/subscription\/(refresh$|check$) url script-response-body Documents&PDFExpert.js
-
 [MITM]
 hostname = license.pdfexpert.com
 */
-var obj = JSON.parse($response.body);
-obj["isInGracePeriod"] = false;
-obj["isEligibleForIntroPeriod"] = false;
-obj["originalTransactionId"] = "20000000000000";
-obj["subscriptionState"] = "active";
-obj["subscriptionExpirationDate"] = "23:59 31/12/2029";
-obj["subscriptionAutoRenewStatus"] = "autoRenewOff";
-obj["subscriptionReceiptId"] = "1500000000000";
+var obj= {
+  "productId": "com.readdle.PDFExpert5.subscription.year50_pe6",
+  "subscriptionExpirationIntent": "userCancelled",
+  "receiptStatus": "ok",
+  "subscriptionExpirationDate": "13:15 03/11/2099",
+  "isPDFExpert6User": false,
+  "inAppStates": [
+    {
+      "productId": "com.readdle.PDFExpert5.subscription.year50_pe6",
+      "subscriptionExpirationIntent": "userCancelled",
+      "receiptStatus": "ok",
+      "subscriptionExpirationDate": "13:15 03/11/2099",
+      "isEligibleForIntroPeriod": false,
+      "originalTransactionId": "20000618444996",
+      "productName": "subscription",
+      "isInBillingRetryPeriod": false,
+      "type": "subscription",
+      "subscriptionState": "active",
+      "subscriptionAutoRenewStatus": "autoRenewOff",
+      "isInGracePeriod": false
+    }
+  ],
+  "isEligibleForIntroPeriod": false,
+  "originalTransactionId": "20000618444996",
+  "isEligibleFor": [
+    "winback"
+  ],
+  "isInBillingRetryPeriod": false,
+  "type": "subscription",
+  "inAppPurchased": [
+    "com.readdle.PDFExpert5.subscription.year50_pe6"
+  ],
+  "bundleId": "com.readdle.PDFExpert5",
+  "receiptId": 1572178404000,
+  "chargingPlatform": "iOS AppStore",
+  "subscriptionState": "active",
+  "subscriptionAutoRenewStatus": "autoRenewOff",
+  "isInGracePeriod": false
+};
 
 $done({body: JSON.stringify(obj)});
