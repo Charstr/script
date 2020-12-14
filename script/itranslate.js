@@ -1,5 +1,6 @@
 /*
-^https:\/\/ssl-api\.itranslateapp\.com\/accounts\/v4\/user
+[Script] = ^https:\/\/ssl-api\.itranslateapp\.com\/accounts\/v4\/user
+[MITM] = ssl-api.itranslateapp.com
 */
 
 let body = JSON.parse($response.body)
