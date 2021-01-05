@@ -8,7 +8,7 @@ const path2 = "/Api/thread"
 
 const url = $request.url;
 let body = $response.body;
-if(url.indelOf(path1) != -1){
+if(url.indexOf(path1) != -1){
     body[0] = '';
     body = JSON.stringify(body)
 }
