@@ -6,8 +6,7 @@ host-suffix, forestapp.cc, proxy
 #->走直连
 domain-suffix,acfunwiki.org,DIRECT
 domain-keyword,adnmb,DIRECT
-
-
+domain,file.ipadown.com,DIRECT
 #-> block ads
 domain-keyword,ad,REJECT
 DOMAIN-KEYWORD,cnzz,REJECT
