@@ -1,5 +1,6 @@
 let body = JSON.parse($response.body)
-body[0] = {};
-body[1] = {};
+if(body.admin){
+    body = {};
+}
 body = JSON.stringify(body)
 $done({ body })
