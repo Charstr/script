@@ -1,4 +1,4 @@
-
+/*
 ^https://net\.rayjump\.com/openapi/ad
 */
 
