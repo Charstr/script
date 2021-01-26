@@ -3,6 +3,6 @@
 */
 
 let body = JSON.parse($response.body)
-body = [];
+body.data = [];
 body = JSON.stringify(body)
 $done({body})
