@@ -3,6 +3,6 @@
 api.douban.com
 */
 let body = JSON.parse($response.body)
-body = [];
+body.ads = [];
 body = JSON.stringify(body)
 $done({body})
