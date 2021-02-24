@@ -3,14 +3,24 @@
 host-suffix, v2ex.com, proxy
 #forest
 host-suffix, forestapp.cc, proxy
+
 #->走直连
 domain-suffix,acfunwiki.org,DIRECT
 domain-keyword,adnmb,DIRECT
 domain,file.ipadown.com,DIRECT
+domain-suffix,mihoyo.com,DIRECT
+# taptap
+domain-keyword,taptap,DIRECT
+domain-suffix,taptapdata.com,DIRECT
+domain-suffix,taptap.com,DIRECT
+domain-suffix,tapimg.com,DIRECT
+domain-suffix,tapdb.net,DIRECT
+
 #-> block ads
 domain-keyword,ad,REJECT
 DOMAIN-KEYWORD,cnzz,REJECT
 DOMAIN-KEYWORD,umengcloud,REJECT
+
 # 知乎去广告
 DOMAIN,118.89.204.198,REJECT
 DOMAIN-KEYWORD,118.89.204.198,REJECT
