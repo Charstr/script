@@ -3,6 +3,7 @@
 [MITM] = ssl-api.itranslateapp.com
 */
 
+
 let body = JSON.parse($response.body)
 body = {
     "activated": true,
