@@ -1,0 +1,2 @@
+DOMAIN-SUFFIX,cloudfront.net,PROXY
+USER-AGENT,*.podcasts.apple.*,PROXY
