@@ -1,0 +1,5 @@
+*://mcdn.bilivideo.cn/*
+*://broadcast.chat.bilibili.com/*
+*://stun(.*)\.chat\.bilibili\.com/*
+*://(.*)-p2p-(.*)\.chat\.bilibili\.com/*
+*://(.*)\.v(.*)d\.szbdyd\.com/*
