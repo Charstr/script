@@ -1,3 +1,4 @@
+// 去除米游社搜索栏的推荐
 let body = $response.body; 
 if (body) { 
     switch (!0) { 
