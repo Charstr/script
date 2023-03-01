@@ -1,0 +1,12 @@
+HOST-SUFFIX,xp.apple.com,REJECT
+HOST-SUFFIX,ca.iadsdk.apple.com,REJECT
+HOST-SUFFIX,ios.bugly.qq.com,REJECT
+HOST-SUFFIX,skadsdk.appsflyer.com,REJECT
+
+HOST-SUFFIX,dataflow.biliapi.com,REJECT
+HOST-SUFFIX,data.bilibili.com,REJECT
+HOST-SUFFIX,cm.bilibili.com,REJECT
+
+HOST-SUFFIX,sec.umeng.com,REJECT
+HOST-SUFFIX,ulogs.umeng.com,REJECT
+HOST-SUFFIX,utoken.umeng.com,REJECT
