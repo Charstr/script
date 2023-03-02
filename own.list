@@ -7,6 +7,16 @@ HOST-SUFFIX,dataflow.biliapi.com,REJECT
 HOST-SUFFIX,data.bilibili.com,REJECT
 HOST-SUFFIX,cm.bilibili.com,REJECT
 
+HOST-SUFFIX,mcdn.bilivideo.cn,REJECT
+HOST-SUFFIX,broadcast.chat.bilibili.com,REJECT
+HOST-SUFFIX,szbdyd.com,REJECT
+
+HOST-SUFFIX,stun(.*)\.chat\.bilibili\.com,REJECT
+HOST-SUFFIX,(.*)-p2p-(.*)\.chat\.bilibili\.com,REJECT
+HOST-SUFFIX,(.*)\.v(.*)d\.szbdyd\.com,REJECT
+
 HOST-SUFFIX,sec.umeng.com,REJECT
 HOST-SUFFIX,ulogs.umeng.com,REJECT
 HOST-SUFFIX,utoken.umeng.com,REJECT
+
+HOST-SUFFIX,crashlytics.com,REJECT
