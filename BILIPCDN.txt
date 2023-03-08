@@ -1,5 +1,9 @@
 ||mcdn.bilivideo.cn^
 ||broadcast.chat.bilibili.com^
+||stun.chat.bilibili.com^
+||dataflow.biliapi.com^
+||data.bilibili.com^
+||cm.bilibili.com^
 
 /stun(.*)\.chat\.bilibili\.com/
 /(.*)-p2p-(.*)\.chat\.bilibili\.com/
@@ -9,9 +13,6 @@
 ||ios.bugly.qq.com^
 ||skadsdk.appsflyer.com^
 
-||dataflow.biliapi.com^
-||data.bilibili.com^
-||cm.bilibili.com^
 ||sec.umeng.com^
 ||ulogs.umeng.com^
 ||utoken.umeng.com^
