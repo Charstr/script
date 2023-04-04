@@ -1,3 +1,44 @@
+
+# aliyun
+DOMAIN,httpdns-api.aliyuncs.com,REJECT
+DOMAIN,httpdns-sc.aliyuncs.com,REJECT
+IP-CIDR,203.107.1.1/24,REJECT,no-resolve
+
+# weixin
+DOMAIN,dns.weixin.qq.com,REJECT
+DOMAIN,dns.weixin.qq.com.cn,REJECT
+IP-CIDR,42.81.232.18/32,REJECT,no-resolve
+IP-CIDR,42.187.182.106/32,REJECT,no-resolve
+IP-CIDR,42.187.182.123/32,REJECT,no-resolve
+IP-CIDR,42.187.184.154/32,REJECT,no-resolve
+IP-CIDR,123.151.54.50/32,REJECT,no-resolve
+IP-CIDR6,2402:4e00:1900:1700:0:9554:1ad9:c3a/128,REJECT,no-resolve
+IP-CIDR6,240e:928:1400:10::25/128,REJECT,no-resolve
+
+# baidu
+DOMAIN,httpsdns.baidu.com,REJECT
+DOMAIN,httpdns.baidu.com,REJECT
+
+# baidu cloud
+DOMAIN,httpdns.baidubce.com,REJECT
+IP-CIDR,186.76.76.200/32,REJECT,no-resolve
+
+# bilibili
+DOMAIN,httpdns.bilivideo.com,REJECT
+
+# netease
+
+DOMAIN,httpdns.n.netease.com,REJECT
+IP-CIDR,59.111.239.61/32,REJECT,no-resolve
+IP-CIDR,59.111.239.62/32,REJECT,no-resolve
+DOMAIN,music.httpdns.c.163.com,REJECT
+DOMAIN,lofter.httpdns.c.163.com,REJECT
+
+# weibo
+DOMAIN,dns.weibo.cn,REJECT
+IP-CIDR,39.97.128.148/32,REJECT,no-resolve
+IP-CIDR,39.97.130.51/32,REJECT,no-resolve
+
 HOST-SUFFIX,xp.apple.com,REJECT
 HOST-SUFFIX,ca.iadsdk.apple.com,REJECT
 HOST-SUFFIX,ios.bugly.qq.com,REJECT
