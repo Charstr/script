@@ -1,8 +1,44 @@
 
-# aliyun
-HOST,httpdns-api.aliyuncs.com,REJECT
-HOST,httpdns-sc.aliyuncs.com,REJECT
-IP-CIDR,203.107.1.1/24,REJECT,no-resolve
+# Alibaba
+DOMAIN,httpdns.alicdn.com,REJECT
+# Aliyun
+DOMAIN,httpdns-api.aliyuncs.com,REJECT
+DOMAIN,httpdns-sc.aliyuncs.com,REJECT
+IP-CIDR,203.107.1.0/24,REJECT,no-resolve
+# baidu
+HOST,httpsdns.baidu.com,REJECT
+HOST,httpdns.baidu.com,REJECT
+
+# BaiduBCE
+DOMAIN,httpdns.baidubce.com,REJECT
+IP-CIDR,186.76.76.200/32,REJECT,no-resolve
+
+# Bilibili
+HOST,httpdns.bilivideo.com,REJECT
+
+# JD
+DOMAIN,dns.jd.com,REJECT
+IP-CIDR,101.124.19.122/32,REJECT,no-resolve
+IP-CIDR6,2402:db40:5100:1011::5/128,REJECT,no-resolve
+
+# baidu cloud
+HOST,httpdns.baidubce.com,REJECT
+IP-CIDR,186.76.76.200/32,REJECT,no-resolve
+
+# NetEase
+DOMAIN,httpdns.n.netease.com,REJECT
+DOMAIN,httpdns.music.163.com,REJECT
+DOMAIN,music.httpdns.c.163.com,REJECT
+DOMAIN,lofter.httpdns.c.163.com,REJECT
+IP-CIDR,59.111.239.61/32,REJECT,no-resolve
+IP-CIDR,59.111.239.62/32,REJECT,no-resolve
+IP-CIDR,115.236.121.51/32,REJECT,no-resolve
+IP-CIDR,115.236.121.195/32,REJECT,no-resolve
+
+# Weibo
+HOST,dns.weibo.cn,REJECT
+IP-CIDR,39.97.128.148/32,REJECT,no-resolve
+IP-CIDR,39.97.130.51/32,REJECT,no-resolve
 
 # weixin
 HOST,dns.weixin.qq.com,REJECT
@@ -15,30 +51,7 @@ IP-CIDR,123.151.54.50/32,REJECT,no-resolve
 IP6-CIDR,2402:4e00:1900:1700:0:9554:1ad9:c3a/128,REJECT,no-resolve
 IP6-CIDR,240e:928:1400:10::25/128,REJECT,no-resolve
 
-# baidu
-HOST,httpsdns.baidu.com,REJECT
-HOST,httpdns.baidu.com,REJECT
-
-# baidu cloud
-HOST,httpdns.baidubce.com,REJECT
-IP-CIDR,186.76.76.200/32,REJECT,no-resolve
-
-# bilibili
-HOST,httpdns.bilivideo.com,REJECT
-
-# netease
-
-HOST,httpdns.n.netease.com,REJECT
-IP-CIDR,59.111.239.61/32,REJECT,no-resolve
-IP-CIDR,59.111.239.62/32,REJECT,no-resolve
-HOST,music.httpdns.c.163.com,REJECT
-HOST,lofter.httpdns.c.163.com,REJECT
-
-# weibo
-HOST,dns.weibo.cn,REJECT
-IP-CIDR,39.97.128.148/32,REJECT,no-resolve
-IP-CIDR,39.97.130.51/32,REJECT,no-resolve
-
+# RULES
 
 HOST-SUFFIX,xp.apple.com,REJECT
 HOST-SUFFIX,ca.iadsdk.apple.com,REJECT
