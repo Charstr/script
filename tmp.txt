@@ -1,7 +1,7 @@
 
 
 # B站
-http-response ^https://app.(biliapi|bilibili).(net|com)/x/v2/feed/index script-path=https://raw.githubusercontent.com/Charstr/script/main/bilibili.js, requires-body=true, tag=BiliBili优化
+# http-response ^https://app.(biliapi|bilibili).(net|com)/x/v2/feed/index script-path=https://raw.githubusercontent.com/Charstr/script/main/bilibili.js, requires-body=true, tag=BiliBili优化
 
 # ～ BiliBili_哔哩哔哩_视频播放下方商品推广@ddgksf2013
 http-response ^https?:\/\/api\.bili(api|bili)\.(net|com)\/pgc\/season\/app\/related\/recommend\? script-path=https://raw.githubusercontent.com/Charstr/script/main/bilibili_json.js, requires-body=true, tag=视频播放下方商品推广
