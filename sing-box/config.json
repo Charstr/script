@@ -1,0 +1,485 @@
+{
+  "log": {
+    "level": "info",
+    "timestamp": true
+  },
+  "ntp": {
+    "enabled": true,
+    "server": "time.apple.com",
+    "server_port": 123,
+    "interval": "30m0s",
+    "detour": "DIRECT"
+  },
+  "dns": {
+    "servers": [
+      {
+        "tag": "dns_dot4",
+        "address": "tls://1.1.1.1",
+        "address_resolver": "dns_resolver"
+      },
+      {
+        "tag": "dns_google",
+        "address": "8.8.4.4",
+        "address_resolver": "dns_resolver"
+      },
+      {
+        "tag": "dns_alidns",
+        "address": "h3://dns.alidns.com/dns-query",
+        "address_resolver": "dns_resolver",
+        "detour": "DIRECT"
+      },
+      {
+        "tag": "dns_dnspod",
+        "address": "https://doh.pub/dns-query",
+        "address_resolver": "dns_resolver",
+        "detour": "DIRECT"
+      },
+      {
+        "tag": "dns_fakeip",
+        "address": "fakeip"
+      },
+      {
+        "tag": "dns_resolver",
+        "address": "223.5.5.5",
+        "detour": "DIRECT"
+      },
+      {
+        "tag": "dns_refused",
+        "address": "rcode://success"
+      }
+    ],
+    "rules": [
+      {
+        "outbound": "any",
+        "server": "dns_resolver"
+      },
+      {
+        "rule_set": [
+          "geo-Apple",
+          "geo-Bilibili",
+          "geo-cn"
+        ],
+        "query_type": [
+          "A",
+          "AAAA"
+        ],
+        "server": [
+          "dns_alidns",
+          "dns_dnspod"
+        ]
+      },
+      {
+        "domain_suffix": [
+          ".mcdn.bilivideo.cn",
+          ".szbdyd.com"
+        ],
+        "domain_regex": [
+          "cn-[a-zA-Z0-9-]+\\.bilivideo\\.com",
+          "[a-zA-Z0-9-]+-pcdn-[a-zA-Z0-9-]+\\.biliapi\\.net"
+        ],
+        "server": "dns_refused"
+      },
+      {
+        "rule_set": [
+          "geo-Copilot",
+          "geo-Bahamut",
+          "geo-GlobalMedia",
+          "geo-OpenAI",
+          "geo-Telegram",
+          "geo-Global",
+          "geo-Twitter"
+        ],
+        "query_type": [
+          "A",
+          "AAAA"
+        ],
+        "server": "dns_fakeip"
+      }
+    ],
+    "final": [
+      "dns_alidns",
+      "dns_dnspod"
+    ],
+    "independent_cache": true,
+    "reverse_mapping": true,
+    "fakeip": {
+      "enabled": true,
+      "inet4_range": "198.18.0.0/16"
+    }
+  },
+  "inbounds": [
+    {
+      "type": "mixed",
+      "tag": "mixed-in",
+      "listen": "0.0.0.0",
+      "listen_port": 7890,
+      "sniff": false
+    },
+    {
+      "type": "direct",
+      "tag": "dns-in",
+      "listen": "::",
+      "listen_port": 1053
+    },
+    {
+      "type": "redirect",
+      "tag": "redirect-in",
+      "listen": "::",
+      "listen_port": 7892,
+      "sniff": true,
+      "sniff_override_destination": true
+    },
+    {
+      "type": "tun",
+      "tag": "tun-in",
+      "inet4_address": "172.16.0.1/30",
+      "auto_route": true,
+      "gso": true,
+      "strict_route": true,
+      "stack": "system",
+      "sniff": true,
+      "sniff_override_destination": true,
+      "endpoint_independent_nat": false
+    }
+  ],
+  "outbound_providers": [
+    {
+      "tag": "flowerconfig",
+      "type": "http",
+      "download_url": "xx",
+      "download_interval": "24h",
+      "path": "./providers/proxy/flower.yaml",
+      "healthcheck_interval": "1h",
+      "download_ua": "Clash.Meta",
+      "download_detour": "DIRECT"
+    },
+    {
+      "tag": "acaconfig",
+      "type": "http",
+      "download_url": "xx",
+      "download_interval": "24h",
+      "path": "./providers/proxy/aca.yml",
+      "healthcheck_interval": "1h",
+      "download_ua": "Clash.Meta",
+      "download_detour": "DIRECT"
+    },
+    {
+      "tag": "prprconfig",
+      "type": "http",
+      "download_url": "xxx",
+      "download_interval": "24h",
+      "path": "./providers/proxy/prpr.yaml",
+      "healthcheck_interval": "1h",
+      "download_ua": "Clash.Meta",
+      "download_detour": "DIRECT"
+    },
+    {
+      "tag": "ouoconfig",
+      "type": "http",
+      "download_url": "xxx",
+      "download_interval": "24h",
+      "path": "./providers/proxy/ouo.yml",
+      "healthcheck_interval": "1h",
+      "download_ua": "Clash.Meta",
+      "download_detour": "DIRECT"
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "direct",
+      "tag": "DIRECT"
+    },
+    {
+      "type": "block",
+      "tag": "REJECT"
+    },
+    {
+      "type": "dns",
+      "tag": "dns-out"
+    },
+    {
+      "tag": "HongKong",
+      "type": "selector",
+      "providers": [
+        "flowerconfig",
+        "prprconfig",
+        "acaconfig",
+        "ouoconfig"
+      ],
+      "includes": [
+        "(?i)🇭🇰|HK|hk|香港|港|HongKong"
+      ]
+    },
+    {
+      "tag": "TaiWan",
+      "type": "selector",
+      "providers": [
+        "flowerconfig",
+        "prprconfig",
+        "acaconfig",
+        "ouoconfig"
+      ],
+      "includes": [
+        "(?i)🇹🇼|TW|tw|台湾|臺灣|台|Taiwan"
+      ]
+    },
+    {
+      "tag": "Singapore",
+      "type": "selector",
+      "providers": [
+        "flowerconfig",
+        "prprconfig",
+        "acaconfig",
+        "ouoconfig"
+      ],
+      "includes": [
+        "(?i)🇸🇬|SG|sg|新加坡|狮|Singapore"
+      ]
+    },
+    {
+      "tag": "Japan",
+      "type": "selector",
+      "providers": [
+        "flowerconfig",
+        "prprconfig",
+        "acaconfig",
+        "ouoconfig"
+      ],
+      "includes": [
+        "(?i)🇯🇵|JP|jp|日本|日|Japan"
+      ]
+    },
+    {
+      "tag": "USA",
+      "type": "selector",
+      "providers": [
+        "flowerconfig",
+        "prprconfig",
+        "acaconfig",
+        "ouoconfig"
+      ],
+      "includes": [
+        "(?i)🇺🇸|US|us|美国|美|United States"
+      ]
+    },
+    {
+      "tag": "Bilibili",
+      "type": "selector",
+      "outbounds": [
+        "DIRECT",
+        "TaiWan",
+        "HongKong",
+        "Japan",
+        "Singapore",
+        "USA"
+      ]
+    },
+    {
+      "tag": "PROXY",
+      "type": "selector",
+      "outbounds": [
+        "TaiWan",
+        "HongKong",
+        "Japan",
+        "Singapore",
+        "USA"
+      ]
+    },
+    {
+      "tag": "Apple",
+      "type": "selector",
+      "outbounds": [
+        "DIRECT",
+        "TaiWan",
+        "HongKong",
+        "Japan",
+        "Singapore",
+        "USA"
+      ]
+    },
+    {
+      "tag": "Copilot",
+      "type": "selector",
+      "outbounds": [
+        "USA",
+        "Singapore",
+        "Japan"
+      ]
+    },
+    {
+      "tag": "GlobalMedia",
+      "type": "selector",
+      "outbounds": [
+        "HongKong",
+        "TaiWan",
+        "Singapore",
+        "USA",
+        "Japan"
+      ]
+    }
+  ],
+  "route": {
+    "rules": [
+      {
+        "protocol": "dns",
+        "outbound": "dns-out"
+      },
+      {
+        "inbound": "dns-in",
+        "outbound": "dns-out"
+      },
+      {
+        "ip_is_private": true,
+        "ip_cidr": [
+          "5.5.5.5"
+        ],
+        "outbound": "DIRECT"
+      },
+      {
+        "domain_suffix": [
+          ".mcdn.bilivideo.cn",
+          ".szbdyd.com"
+        ],
+        "domain_keyword": [
+          "mcdn"
+        ],
+        "domain_regex": [
+          "cn-[a-zA-Z0-9-]+\\.bilivideo\\.com",
+          "[a-zA-Z0-9-]+-pcdn-[a-zA-Z0-9-]+\\.biliapi\\.net"
+        ],
+        "outbound": "REJECT"
+      },
+      {
+        "rule_set": "geo-Bilibili",
+        "outbound": "Bilibili"
+      },
+      {
+        "rule_set": "geo-Telegram",
+        "outbound": "Singapore"
+      },
+      {
+        "rule_set": "geo-Apple",
+        "outbound": "Apple"
+      },
+      {
+        "rule_set": [
+          "geo-Copilot",
+          "geo-OpenAI"
+        ],
+        "outbound": "Copilot"
+      },
+      {
+        "rule_set": "geo-Bahamut",
+        "outbound": "TaiWan"
+      },
+      {
+        "rule_set": "geo-GlobalMedia",
+        "outbound": "GlobalMedia"
+      },
+      {
+        "rule_set": [
+          "geo-Global",
+          "geo-Twitter"
+        ],
+        "outbound": "PROXY"
+      },
+      {
+        "rule_set": [
+          "geo-cn",
+          "geo-private"
+        ],
+        "domain_suffix": ".cn",
+        "outbound": "DIRECT"
+      }
+    ],
+    "rule_set": [
+      {
+        "tag": "geo-Copilot",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/bm7/Copilot.srs",
+        "download_detour": "DIRECT"
+      },
+      {
+        "tag": "geo-Bahamut",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/bm7/Bahamut.srs",
+        "download_detour": "DIRECT"
+      },
+      {
+        "tag": "geo-GlobalMedia",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/bm7/GlobalMedia.srs",
+        "download_detour": "DIRECT"
+      },
+      {
+        "tag": "geo-OpenAI",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/bm7/OpenAI.srs",
+        "download_detour": "DIRECT"
+      },
+      {
+        "tag": "geo-Telegram",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/bm7/Telegram.srs",
+        "download_detour": "DIRECT"
+      },
+      {
+        "tag": "geo-Apple",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/bm7/Apple.srs",
+        "download_detour": "DIRECT"
+      },
+      {
+        "tag": "geo-Bilibili",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/bm7/BiliBili.srs",
+        "download_detour": "DIRECT"
+      },
+      {
+        "tag": "geo-Global",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/bm7/Global.srs",
+        "download_detour": "DIRECT"
+      },
+      {
+        "tag": "geo-Twitter",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/bm7/Twitter.srs",
+        "download_detour": "DIRECT"
+      },
+      {
+        "tag": "geo-cn",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/mixed/cn.srs",
+        "download_detour": "DIRECT"
+      },
+      {
+        "tag": "geo-private",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/mixed/private.srs",
+        "download_detour": "DIRECT"
+      }
+    ],
+    "final": "GlobalMedia",
+    "auto_detect_interface": true
+  },
+  "experimental": {
+    "clash_api": {
+      "external_controller": "0.0.0.0:9999",
+      "external_ui": "ui",
+      "secret": "",
+      "default_mode": "Rule"
+    }
+  }
+}
