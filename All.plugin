@@ -87,26 +87,6 @@ IP-CIDR6,2402:4e00:1200:ed00:0:9089:6dac:96b6/128,REJECT,no-resolve
 
 [Rewrite]
 
-# HTTPDNS优化
-^http:\/\/101\.35\.204\.35\/d - reject
-^http:\/\/103\.37\.155\.60\/fetch - reject
-^http:\/\/114\.110\.96\.26\/d - reject
-^http:\/\/180\.76\.76\.112\/v4\/resolve - reject
-^http:\/\/182\.256\.116\.116\/d - reject
-^http:\/\/api\.weibo\.cn\/2\/httpdns\/config - reject
-^https?:\/\/dns\.jd\.com\/v6\/b - reject
-^https?:\/\/110\.76\.8\.150\/squery - reject
-^https?:\/\/203\.209\.230\.39\/squery - reject
-^https?:\/\/2400:B180:6001::18F\/squery - reject
-^https?:\/\/2400:B200:1005:3000::155\/squery - reject
-^https?:\/\/amdc-sibling\.alipay\.com\.cn\/s?query - reject
-^https?:\/\/amdc\.alipay\.com\/s?query - reject
-^https?:\/\/dns\.weixin\.qq\.com\/cgi-bin\/micromsg-bin\/newgetdns - reject
-^https?:\/\/short\.weixin\.qq\.com\/cgi-bin\/micromsg-bin\/getcdndns - reject
-
-# 自定义规则
-
-
 # Redirect Google Search Service
 ^https?:\/\/(www.)?(g|google)\.cn https://www.google.com 302
 # Redirect Google Maps Service
