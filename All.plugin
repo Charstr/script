@@ -275,7 +275,7 @@ IP-CIDR6,2402:4e00:1200:ed00:0:9089:6dac:96b6/128,REJECT,no-resolve
 #------------------O-------------------#
 
 # QCloud
-^https?:\/\/119\.29\.29\.29\/d - reject
+#^https?:\/\/119\.29\.29\.29\/d - reject
 
 # QQmusic
 ^http:\/\/182\.256\.116\.116\/d - reject
