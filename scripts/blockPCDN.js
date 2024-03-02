@@ -59,8 +59,8 @@ if (location.href.startsWith('https://www.bilibili.com/video/') || location.href
 		try {
 			const urlObj = new URL(url);
 			const hostName = urlObj.hostname;
-			if (urlObj.hostname.endsWith(".mcdn.bilivideo.cn")) {
-				urlObj.host = cdnDomain || 'upos-sz-mirrorcoso1.bilivideo.com';
+			if (urlObj.hostname.endsWith(".mcdn.bilivideo.cn") || urlObj.hostname.match(/cn-[a-zA-Z0-9-]+\.bilivideo\.com/)) {
+				urlObj.host = cdnDomain || 'upos-sz-mirrorali.bilivideo.com';
 				urlObj.port = 443;
 				console.warn(`更换视频源: ${hostName} -> ${urlObj.host}`);
 				return urlObj.toString();
@@ -93,6 +93,38 @@ if (location.href.startsWith('https://www.bilibili.com/video/') || location.href
 			try {
 				arguments[1] = replaceP2PUrl(arguments[1]);
 			} finally {
+				return open.apply(this, arguments);
+			}
+		}
+	})(unsafeWindow.XMLHttpRequest.prototype.open);
+}
+
+// 检查是否为 https://live.bilibili.com/xxxx 页面
+if (location.href.startsWith('https://live.bilibili.com/')) {
+
+	// 定义需要匹配的正则表达式数组
+	const regexPatterns = [
+		"[a-zA-Z0-9-]+-pcdn-[a-zA-Z0-9-]+\\.biliapi\\.net",
+		"stun-(.*)\\.chat\\.bilibili\\.com",
+		"(.*)-p2p-(.*)\\.chat\\.bilibili\\.com",
+		"(.*)-live-tracker-(.*)\\.chat\\.bilibili\\.com"
+	];
+
+	// 重写 XMLHttpRequest 的 open 方法
+	(function (open) {
+		unsafeWindow.XMLHttpRequest.prototype.open = function () {
+			try {
+				// 判断请求的 URL 是否匹配正则表达式数组中的任意一项
+				const urlToCheck = arguments[1];
+				if (regexPatterns.some(pattern => new RegExp(pattern).test(urlToCheck))) {
+					// 如果匹配，则断开连接
+					console.warn(`断开连接: ${urlToCheck}`);
+					return;
+				}
+			} catch (e) {
+				console.error('发生错误:', e);
+			} finally {
+				// 调用原始的 open 方法
 				return open.apply(this, arguments);
 			}
 		}
