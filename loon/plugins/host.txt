@@ -1,0 +1,2 @@
+
+hostname = bbs-api.miyoushe.com, *.mcdn.bilivideo.com, upos-hz-mirrorakam.akamaized.net, www.google.cn, api.abema.io, *.uve.weibo.com, *weibo.com, *.weibo.cn, *.biliapi.net, *.biliapi.com, *.bilibili.com, *.bilibili.net, *.bilibili.cn, *.bilivideo.com, *.bilivideo.cn, *.biliintl.com, *.youtube.com

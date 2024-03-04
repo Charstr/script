@@ -1,0 +1,131 @@
+# 去除了广告相关的规则
+# 去广告之后网络响应变慢
+#
+
+[Rewrite]
+
+# Redirect Google Search Service
+^https?:\/\/(www.)?(g|google)\.cn https://www.google.com 302
+# Redirect Google Maps Service
+^https?:\/\/(ditu|maps).google\.cn https://maps.google.com 302
+
+#> abema
+^https?:\/\/api\.abema\.io\/v\d\/ip\/check - reject-200
+
+#--------------B---------------#
+# B站CDN重定向
+^https?:\/\/upos-hz-mirrorakam\.akamaized\.net https://upos-sz-mirrorali.bilivideo.com 307 
+^https?:\/\/(.*):(4480|4483|9102)\/upgcxcode\/ http://upos-sz-mirrorali.bilivideo.com 307
+^https?:\/\/(.*):(8000)\/v1\/resource\/ - reject
+
+
+#> bilibili
+^http:\/\/203\.107\.1\.65\/\d+\/resolve  - reject
+^http:\/\/203\.107\.1\.66\/\d+\/resolve  - reject
+
+# > 哔哩哔哩屏蔽IP请求
+^https?:\/\/app\.bilibili\.com\/x\/resource\/ip - reject
+
+# ======= BiliJson 播放页处理 ======= #
+# ～ BiliBili_哔哩哔哩_屏蔽广告浮窗@ddgksf2013
+^https?:\/\/api\.bilibili\.com\/pgc\/activity\/deliver\/material\/receive - reject-dict
+# ～ BiliBili_哔哩哔哩_Material_Ad@ddgksf2013
+^https?:\/\/api\.bilibili\.com\/x\/vip\/ads\/material\/report - reject-dict
+# ～ BiliBili_哔哩哔哩_小卡片广告@ddgksf2013
+^https?:\/\/api\.bilibili\.com\/pgc\/season\/player\/cards - reject-dict
+
+# ======= BiliJson 开屏及隐私 ======= #
+# ～ BiliBili_哔哩哔哩_屏蔽IP请求@ddgksf2013
+^https?:\/\/app\.bilibili\.com\/x\/resource\/ip - reject
+# ～ BiliBili_哔哩哔哩_应用开屏去广告@bm7
+^https?://app.bilibili.com/x/v2/splash/show - reject-dict
+
+# ======= BiliJson Tab页处理 ======= #
+
+# ～ BiliBili_哔哩哔哩_漫画去广告@ddgksf2013
+^https?:\/\/manga\.bilibili\.com\/twirp\/comic\.v\d\.Comic\/(Flash|ListFlash|GetActivityTab) - reject-dict
+
+# ======= BiliProto 处理 ======= #
+# ～ BiliBili_哔哩哔哩_屏蔽DefaultWord@ddgksf2013
+^https?:\/\/(app\.bilibili\.com|grpc\.biliapi\.net)\/bilibili\.app\.interface\.v1\.Search\/Default - reject
+
+#> 米游社
+^https?:\/\/bbs-api\.miyoushe\.com\/apihub\/api\/getAppSplash - reject
+
+
+#------------------W-------------------#
+
+# Weibo
+# refer: https://github.com/CNSRE/HTTPDNSLib-for-iOS
+^http:\/\/api\.weibo\.cn\/2\/httpdns\/config - reject
+^http:\/\/api\.weibo\.cn\/httpdns\/config - reject
+
+#--------------Y---------------#
+# ======= youtube ======= #
+^https?:\/\/(www|s)\.youtube\.com\/api\/stats\/ads - reject-200
+^https?:\/\/(www|s)\.youtube\.com\/(pagead|ptracking) - reject-200
+^https?:\/\/s\.youtube\.com\/api\/stats\/qoe\?adcontext - reject-200
+
+
+[Script]
+
+# > 米游社搜索栏推荐
+
+http-response ^https?:\/\/bbs-api\.miyoushe\.com\/apihub\/api\/home\/new script-path=https://raw.githubusercontent.com/Charstr/script/main/loon/scripts/mys.js, requires-body=true
+
+http-response ^https?:\/\/bbs-api\.miyoushe\.com\/misc\/api\/getSiteHotKeyword script-path=https://raw.githubusercontent.com/Charstr/script/main/loon/scripts/mys.js, requires-body=true
+
+
+# 微博去广告
+http-response ^https?://(sdk|wb)app\.uve\.weibo\.com(/interface/sdk/sdkad.php|/wbapplua/wbpullad.lua)script-path=https://raw.githubusercontent.com/zmqcherish/proxy-script/main/weibo_launch.js, requires-body=true
+
+http-response ^https?://m?api\.weibo\.c(n|om)/2/(cardlist|searchall|page|messageflow|statuses/(unread_)?friends(/|_)timeline|groups/timeline|statuses/(container_timeline|unread_hot_timeline|extend|video_mixtimeline)|profile/(me|container_timeline)|video/(community_tab|remind_info|tiny_stream_video_list)|checkin/show|\!/live/media_homelist|comments/build_comments|container/get_item|search/(finder|container_timeline|container_discover)) script-path=https://raw.githubusercontent.com/Charstr/script/main/loon/scripts/weibo.js, requires-body=true
+
+# B站
+# http-response ^https?://app.(biliapi|bilibili).(net|com)/x/v2/feed/index script-path=https://raw.githubusercontent.com/Charstr/script/main/loon/scripts/bilibili.js, requires-body=true, tag=BiliBili优化
+
+# ～ BiliBili_哔哩哔哩_视频播放下方商品推广@ddgksf2013
+http-response ^https?:\/\/api\.bili(api|bili)\.(net|com)\/pgc\/season\/app\/related\/recommend\? script-path=https://raw.githubusercontent.com/Charstr/script/main/loon/scripts/bilibili_json.js, requires-body=true, tag=视频播放下方商品推广
+
+
+# ======= BiliJson 直播间处理 ======= #
+# ～ BiliBili_哔哩哔哩_屏蔽直播间商品广告浮窗[还有一个域名]@ddgksf2013
+http-response ^https?:\/\/api\.live\.bilibili\.com\/xlive\/e-commerce-interface\/v\d\/ecommerce-user\/get_shopping_info\? script-path=https://raw.githubusercontent.com/Charstr/script/main/loon/scripts/bilibili_json.js, requires-body=true, tag=屏蔽直播间商品广告浮窗
+# ～ BiliBili_哔哩哔哩_直播去广告@bm7
+http-response ^https?:\/\/api\.live\.bilibili\.com\/xlive\/app-room\/v1\/index\/getInfoByRoom script-path=https://raw.githubusercontent.com/Charstr/script/main/loon/scripts/bilibili_json.js, requires-body=true, tag=直播去广告
+
+# ～ BiliBili_哔哩哔哩_应用开屏广告预加载@yjqiang
+http-response ^https?:\/\/app\.bilibili\.com\/x\/v2\/splash\/list script-path=https://raw.githubusercontent.com/Charstr/script/main/loon/scripts/bilibili_json.js, requires-body=true, tag=应用开屏广告预加载
+# ～ BiliBili_哔哩哔哩_屏蔽直播页顶部轮播图@ddgksf2013
+http-response ^https?:\/\/api\.live\.bilibili\.com\/xlive\/app-interface\/v2\/index\/feed script-path=https://raw.githubusercontent.com/Charstr/script/main/loon/scripts/bilibili_json.js, requires-body=true, tag=屏蔽直播页顶部轮播图
+# ～ BiliBili_哔哩哔哩_推荐去广告@ddgksf2013
+http-response ^https?:\/\/app\.bilibili\.com\/x\/v2\/feed\/index script-path=https://raw.githubusercontent.com/Charstr/script/main/loon/scripts/bilibili_json.js, requires-body=true, tag=推荐去广告
+# ～ BiliBili_哔哩哔哩_追番去广告@ddgksf2013
+http-response ^https?:\/\/api\.(bilibili|biliapi)\.(com|net)\/pgc\/page\/bangumi script-path=https://raw.githubusercontent.com/Charstr/script/main/loon/scripts/bilibili_json.js, requires-body=true, tag=追番去广告
+# ～ BiliBili_哔哩哔哩_观影页面去广告@ddgksf2013
+http-response ^https?:\/\/api\.(bilibili|biliapi)\.(com|net)\/pgc\/page\/cinema\/tab\? script-path=https://raw.githubusercontent.com/Charstr/script/main/loon/scripts/bilibili_json.js, requires-body=true, tag=观影页面去广告
+
+# ======= BiliJson 外观处理 ======= #
+# ～ BiliBili_哔哩哔哩_标签页处理@ddgksf2013
+http-response ^https?:\/\/app\.bilibili\.com\/x\/resource\/show\/tab script-path=https://raw.githubusercontent.com/Charstr/script/main/loon/scripts/bilibili_json.js, requires-body=true, tag=标签页处理
+# ～ BiliBili_哔哩哔哩_我的页面处理@ddgksf2013
+http-response ^https?:\/\/app\.bilibili\.com\/x\/v2\/account\/mine script-path=https://raw.githubusercontent.com/Charstr/script/main/loon/scripts/bilibili_json.js, requires-body=true, tag=我的页面处理
+# ～ BiliBili_哔哩哔哩_屏蔽首页右上活动@ddgksf2013
+http-response ^https?:\/\/app\.bilibili\.com\/x\/resource\/top\/activity script-path=https://raw.githubusercontent.com/Charstr/script/main/loon/scripts/bilibili_json.js, requires-body=true, tag=屏蔽首页右上活动
+# ～ BiliBili_哔哩哔哩_热搜发现@ddgksf2013
+http-response ^https?://app.bilibili.com/x/v2/search/square script-path=https://raw.githubusercontent.com/Charstr/script/main/loon/scripts/bilibili_json.js, requires-body=true, tag=热搜发现
+
+
+# ～ BiliBili_哔哩哔哩_搜索去广告@BiliUniverse
+http-response ^https?:\/\/(grpc\.biliapi\.net|app\.bilibili\.com)\/bilibili\.polymer\.app\.search\.v1\.Search\/SearchAll$ script-path=https://raw.githubusercontent.com/Charstr/script/main/loon/scripts/bilibili_proto_beta.js, requires-body=true, tag=搜索去广告
+# ～ BiliBili_哔哩哔哩_交互点赞投票弹幕及会员弹幕@BiliUniverse
+http-response ^https?:\/\/(app\.bilibili\.com|grpc\.biliapi\.net)\/bilibili\.community\.service\.dm\.v1\.DM\/(DmView|DmSegMobile) script-path=https://raw.githubusercontent.com/Charstr/script/main/loon/scripts/bilibili_proto_beta.js, requires-body=true, tag=交互点赞投票弹幕及会员弹幕
+# ～ BiliBili_哔哩哔哩_青少年弹窗@BiliUniverse
+http-response ^https?:\/\/(grpc\.biliapi\.net|app\.bilibili\.com)\/bilibili\.app\.interface\.v1\.Teenagers\/ModeStatus script-path=https://raw.githubusercontent.com/Charstr/script/main/loon/scripts/bilibili_proto_beta.js, requires-body=true, tag=青少年弹窗
+# ～ BiliBili_哔哩哔哩_UP主推荐广告[适配ipad端]@BiliUniverse
+http-response ^https?:\/\/(app\.bilibili\.com|grpc\.biliapi\.net)\/bilibili\.app\.(view|viewunite)\.v1\.View\/(View|TFInfo)$ script-path=https://raw.githubusercontent.com/Charstr/script/main/loon/scripts/bilibili_proto_beta.js, requires-body=true, tag=UP主推荐广告[适配ipadhostname = 端]
+# ～ BiliBili_哔哩哔哩_动态综合页及视频页去广告@BiliUniverse
+http-response ^https?:\/\/(app\.bilibili\.com|grpc\.biliapi\.net)\/bilibili\.app\.dynamic\.v2\.Dynamic\/Dyn(All|Video)$ script-path=https://raw.githubusercontent.com/Charstr/script/main/loon/scripts/bilibili_proto_beta.js, requires-body=true, tag=动态综合页及视频页去广告
+
+[MITM]
+hostname = bbs-api.miyoushe.com, *.mcdn.bilivideo.com, upos-hz-mirrorakam.akamaized.net, www.google.cn, api.abema.io, *.uve.weibo.com, *weibo.com, *.weibo.cn, *.biliapi.net, *.biliapi.com, *.bilibili.com, *.bilibili.net, *.bilibili.cn, *.bilivideo.com, *.bilivideo.cn, *.biliintl.com, *.youtube.com
