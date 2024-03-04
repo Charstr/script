@@ -1,0 +1,23 @@
+
+
+
+
+
+# 屏蔽b站pcdn, mcdn等
+
+HOST-SUFFIX,szbdyd.com,REJECT
+HOST-SUFFIX,(.*)\.szbdyd\.com,REJECT
+HOST-SUFFIX,(.*)\.v(.*)d\.szbdyd\.com,REJECT
+
+HOST-SUFFIX,mcdn.bilivideo.cn,REJECT
+HOST-SUFFIX,(.*)\.mcdn\.bilivideo\.cn,REJECT
+
+HOST-SUFFIX,stun(.*)\.chat\.bilibili\.com,REJECT
+HOST-SUFFIX,(.*)-p2p-(.*)\.chat\.bilibili\.com,REJECT
+HOST-SUFFIX,[a-zA-Z0-9-]+-pcdn-[a-zA-Z0-9-]+\.biliapi\.net,REJECT
+HOST-SUFFIX,(.*)-live-tracker-(.*)\.chat\.bilibili\.com,REJECT
+
+# 斗鱼pcdn
+HOST-SUFFIX,(.*)p2plive(.*)\.chat\.douyucdn\.cn,REJECT
+HOST-SUFFIX,stun-(.*)\.douyucdn\.cn,REJECT
+
