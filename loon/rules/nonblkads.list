@@ -1,25 +1,89 @@
 
 
 
+# Baidu httpdns
+DOMAIN,httpsdns.baidu.com,REJECT
+DOMAIN,httpdns.baidu.com,REJECT
 
 
-# 屏蔽b站pcdn, mcdn等
+# BaiduBCE
+DOMAIN,httpdns.baidubce.com,REJECT
+IP-CIDR,186.76.76.200/32,REJECT,no-resolve
 
+# Bilibili
+DOMAIN,httpdns.bilivideo.com,REJECT
+
+# Huawei
+DOMAIN,httpdns.c.cdnhwc2.com,REJECT
+
+# JD
+DOMAIN,dns.jd.com,REJECT
+IP-CIDR,101.124.19.122/32,REJECT,no-resolve
+IP-CIDR6,2402:db40:5100:1011::5/128,REJECT,no-resolve
+
+
+# JD Cloud
+IP-CIDR,103.224.222.208/32,REJECT,no-resolve
+
+
+# Kuaishou
+DOMAIN,kuaishou.httpdns.pro,REJECT
+DOMAIN-SUFFIX,httpdns.pro,REJECT
+
+# Meituan
+DOMAIN,httpdns.meituan.com,REJECT
+DOMAIN,httpdnsvip.meituan.com,REJECT
+
+# NetEase
+DOMAIN,httpdns.n.netease.com,REJECT
+DOMAIN,httpdns.music.163.com,REJECT
+DOMAIN,music.httpdns.c.163.com,REJECT
+DOMAIN,lofter.httpdns.c.163.com,REJECT
+IP-CIDR,59.111.239.61/32,REJECT,no-resolve
+IP-CIDR,59.111.239.62/32,REJECT,no-resolve
+IP-CIDR,115.236.121.51/32,REJECT,no-resolve
+IP-CIDR,115.236.121.195/32,REJECT,no-resolve
+
+# Tencent Cloud
+# refer：https://cloud.tencent.com/document/product/379/95497
+IP-CIDR,119.29.29.98/32,REJECT,no-resolve
+IP-CIDR,119.29.29.99/32,REJECT,no-resolve
+
+# Weixin
+DOMAIN,dns.weixin.qq.com,REJECT
+DOMAIN,dns.weixin.qq.com.cn,REJECT
+IP-CIDR,42.81.232.18/32,REJECT,no-resolve
+IP-CIDR,42.187.182.106/32,REJECT,no-resolve
+IP-CIDR,42.187.182.123/32,REJECT,no-resolve
+IP-CIDR,42.187.184.154/32,REJECT,no-resolve
+IP-CIDR,123.151.54.50/32,REJECT,no-resolve
+IP-CIDR6,2402:4e00:1900:1700:0:9554:1ad9:c3a/128,REJECT,no-resolve
+IP-CIDR6,240e:928:1400:10::25/128,REJECT,no-resolve
+
+
+# Weibo
+DOMAIN,dns.weibo.cn,REJECT
+IP-CIDR,39.97.128.148/32,REJECT,no-resolve
+IP-CIDR,39.97.130.51/32,REJECT,no-resolve
+
+# Zhihu
+# refer: https://github.com/lwd-temp/anti-ip-attribution/issues/24
+IP-CIDR,118.89.204.198/23,REJECT,no-resolve
+IP-CIDR6,2402:4e00:1200:ed00:0:9089:6dac:96b6/128,REJECT,no-resolve
+
+
+# B站 pcdn，mcdn，httpdns等
 DOMAIN-SUFFIX,szbdyd.com,REJECT
-DOMAIN-SUFFIX,(.*)\.szbdyd\.com,REJECT
-DOMAIN-SUFFIX,(.*)\.v(.*)d\.szbdyd\.com,REJECT
-
 DOMAIN-SUFFIX,mcdn.bilivideo.cn,REJECT
-DOMAIN-SUFFIX,(.*)\.mcdn\.bilivideo\.cn,REJECT
 
-DOMAIN-SUFFIX,stun(.*)\.chat\.bilibili\.com,REJECT
-DOMAIN-SUFFIX,(.*)-p2p-(.*)\.chat\.bilibili\.com,REJECT
-DOMAIN-SUFFIX,[a-zA-Z0-9-]+-pcdn-[a-zA-Z0-9-]+\.biliapi\.net,REJECT
-DOMAIN-SUFFIX,(.*)-live-tracker-(.*)\.chat\.bilibili\.com,REJECT
+URL-REGEX,(.*)\.szbdyd\.com,REJECT
+URL-REGEX,(.*)\.v(.*)d\.szbdyd\.com,REJECT
+URL-REGEX,(.*)\.mcdn\.bilivideo\.cn,REJECT
+URL-REGEX,stun(.*)\.chat\.bilibili\.com,REJECT
+URL-REGEX,(.*)-p2p-(.*)\.chat\.bilibili\.com,REJECT
+URL-REGEX,[a-zA-Z0-9-]+-pcdn-[a-zA-Z0-9-]+\.biliapi\.net,REJECT
+URL-REGEX,(.*)-live-tracker-(.*)\.chat\.bilibili\.com,REJECT
 
 # 斗鱼pcdn
-DOMAIN-SUFFIX,(.*)p2plive(.*)\.chat\.douyucdn\.cn,REJECT
-DOMAIN-SUFFIX,stun-(.*)\.douyucdn\.cn,REJECT
-
-# httpdns
-DOMAIN-KEYWORD,httpdns,REJECT
+URL-REGEX,(.*)p2plive(.*)\.chat\.douyucdn\.cn,REJECT
+URL-REGEX,stun-(.*)\.douyucdn\.cn,REJECT

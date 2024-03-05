@@ -1,6 +1,82 @@
-# 去除了广告相关的规则
-# 去广告之后网络响应变慢
-#
+[General]
+force-http-engine-hosts = 119.29.29.29:80, dns.weixin.qq.com:80, dns.weixin.qq.com:8080, dns.weixin.qq.com:443, 203.107.1.65:80, 203.107.1.66:80
+
+
+[Rule]
+
+# HTTPDNS
+
+# Baidu
+DOMAIN,httpsdns.baidu.com,REJECT
+DOMAIN,httpdns.baidu.com,REJECT
+
+# BaiduBCE
+DOMAIN,httpdns.baidubce.com,REJECT
+IP-CIDR,186.76.76.200/32,REJECT,no-resolve
+
+# Bilibili
+DOMAIN,httpdns.bilivideo.com,REJECT
+
+# Huawei
+DOMAIN,httpdns.c.cdnhwc2.com,REJECT
+
+# JD
+DOMAIN,dns.jd.com,REJECT
+IP-CIDR,101.124.19.122/32,REJECT,no-resolve
+IP-CIDR6,2402:db40:5100:1011::5/128,REJECT,no-resolve
+
+# JD Cloud
+IP-CIDR,103.224.222.208/32,REJECT,no-resolve
+
+
+# Kuaishou
+DOMAIN,kuaishou.httpdns.pro,REJECT
+DOMAIN-SUFFIX,httpdns.pro,REJECT
+
+
+# Meituan
+DOMAIN,httpdns.meituan.com,REJECT
+DOMAIN,httpdnsvip.meituan.com,REJECT
+
+# NetEase
+DOMAIN,httpdns.n.netease.com,REJECT
+DOMAIN,httpdns.music.163.com,REJECT
+DOMAIN,music.httpdns.c.163.com,REJECT
+DOMAIN,lofter.httpdns.c.163.com,REJECT
+IP-CIDR,59.111.239.61/32,REJECT,no-resolve
+IP-CIDR,59.111.239.62/32,REJECT,no-resolve
+IP-CIDR,115.236.121.51/32,REJECT,no-resolve
+IP-CIDR,115.236.121.195/32,REJECT,no-resolve
+
+# Tencent Cloud
+# refer：https://cloud.tencent.com/document/product/379/95497
+IP-CIDR,119.29.29.98/32,REJECT,no-resolve
+IP-CIDR,119.29.29.99/32,REJECT,no-resolve
+
+
+# Weixin
+DOMAIN,dns.weixin.qq.com,REJECT
+DOMAIN,dns.weixin.qq.com.cn,REJECT
+IP-CIDR,42.81.232.18/32,REJECT,no-resolve
+IP-CIDR,42.187.182.106/32,REJECT,no-resolve
+IP-CIDR,42.187.182.123/32,REJECT,no-resolve
+IP-CIDR,42.187.184.154/32,REJECT,no-resolve
+IP-CIDR,123.151.54.50/32,REJECT,no-resolve
+IP-CIDR6,2402:4e00:1900:1700:0:9554:1ad9:c3a/128,REJECT,no-resolve
+IP-CIDR6,240e:928:1400:10::25/128,REJECT,no-resolve
+
+
+# Weibo
+DOMAIN,dns.weibo.cn,REJECT
+IP-CIDR,39.97.128.148/32,REJECT,no-resolve
+IP-CIDR,39.97.130.51/32,REJECT,no-resolve
+
+# Zhihu
+# refer: https://github.com/lwd-temp/anti-ip-attribution/issues/24
+IP-CIDR,118.89.204.198/23,REJECT,no-resolve
+IP-CIDR6,2402:4e00:1200:ed00:0:9089:6dac:96b6/128,REJECT,no-resolve
+
+
 
 [Rewrite]
 
@@ -8,6 +84,16 @@
 ^https?:\/\/(www.)?(g|google)\.cn https://www.google.com 302
 # Redirect Google Maps Service
 ^https?:\/\/(ditu|maps).google\.cn https://maps.google.com 302
+
+#--------------数字---------------#
+# 58同城
+# > 58
+^https?:\/\/app\.58\.com\/api\/home\/(advertising|appadv) - reject
+
+^https?:\/\/app\.58\.com\/api\/home\/invite\/popupAdv - reject
+^https?:\/\/app\.58\.com\/api\/log\/ - reject
+
+#--------------A---------------#
 
 #> abema
 ^https?:\/\/api\.abema\.io\/v\d\/ip\/check - reject-200
@@ -49,23 +135,173 @@
 # ～ BiliBili_哔哩哔哩_屏蔽DefaultWord@ddgksf2013
 ^https?:\/\/(app\.bilibili\.com|grpc\.biliapi\.net)\/bilibili\.app\.interface\.v1\.Search\/Default - reject
 
+#> 百度
+^https?:\/\/newclient\.map\.baidu\.com\/client\/phpui2\/\?qt=ads - reject
+^https?:\/\/appwk\.baidu\.com\/xpage\/interface\/wknaad - reject
+^https?:\/\/mbd\.baidu\.com\/newspage\/api\/getmobads\?page\=landingshare - reject
+^https?:\/\/mime\.baidu\.com\/v\d\/IosStart\/getStartInfo$ - reject
+^https?:\/\/mime\.baidu\.com\/v\d\/activity\/advertisement - reject
+^https?:\/\/pan\.baidu\.com\/act\/api\/activityentry - reject
+^https?:\/\/pan\.baidu\.com\/act\/v\d\/(bchannel|welfare)\/list - reject
+^https?:\/\/pan\.baidu\.com\/act\/v\d\/bchannel\/list - reject-200
+^https?:\/\/pan\.baidu\.com\/act\/v\d\/welfare\/list - reject-200
+^https?:\/\/pan\.baidu\.com\/rest\/2\.0\/pcs\/ad - reject-200
+^https?:\/\/pan\.baidu\.com\/rest\/\d\.\d\/pcs\/adx - reject
+
+# Baidu
+^http:\/\/180\.76\.76\.112\/v4\/resolve - reject
+^http:\/\/180\.76\.76\.220\/v4\/resolve - reject
+
+#------------------C-------------------#
+# caiyun
+# > caiyun
+^https?:\/\/api\.caiyunapp\.com\/v1\/activity - reject
+
+#> CSDN
+^https?:\/\/app-gw\.csdn\.net\/silkroad-api\/api\/v\d\/assemble\/list\/pub\/channel\/app_open_screen_ad - reject
+
+
+#------------------D-------------------#
+# > 得物
+^https?:\/\/cdn\.poizon\.com\/node-common\/.*.jpg - reject-200
+^https?:\/\/app\.dewu\.com\/api\/v1\/app\/advertisement\/ - reject
+
+# > 豆瓣
+^https?:\/\/api\.douban\.com\/v2\/app_ads\/splash - reject
+^https?:\/\/api\.douban\.com\/b.*\/common_ads\?.* - reject
+^https?:\/\/img\d\.doubanio\.com\/view\/dale-online\/dale_ad\/ - reject
+^https?:\/\/frodo.douban.com\/api\/v2\/movie\/banner - reject
+^https?:\/\/erebor\.douban\.com\/count\/\?ad= - reject
+^https?:\/\/api\.douban\.com\/v\d\/app_ads\/ - reject-200
+
+
+#------------------F-------------------#
+
+# > 飞常准
+^https?:\/\/app\.variflight\.com\/ad\/ - reject
+^https?:\/\/app\.variflight\.com\/v\d\/advert\/ - reject
+
+
+#------------------J-------------------#
+# > 京东
+# > jingdong
+
+^https:\/\/dns\.jd\.com\/v6\/b - reject
+^https?:\/\/msg\.umengcloud\.com\/admsg\/ - reject
+^https?:\/\/api\.m\.jd\.com\/openUpgrade - reject-dict
+^https?:\/\/(bdsp-x|dsp-x)\.jd\.com\/adx\/ - reject-200
+^https?:\/\/img\d+\.360buyimg\.com\/jddjadvertise\/ - reject
+^https?:\/\/jdread-api\.jd\.com\/jdread\/api\/popup - reject-200
+^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=start - reject
+^https?:\/\/ms\.jr\.jd\.com\/gw\/generic\/base\/(new)?na\/m\/adInfo - reject-200
+^https?:\/\/jdread-api\.jd\.com\/jdread\/api\/channel\/module\/opens - reject-200
+^https?:\/\/ms\.jr\.jd\.com\/gw\/generic\/aladdin\/(new)?na\/m\/getLoadingPicture - reject
+^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=(start|queryMaterialAdverts) - reject-200
+
+# > 交管12123
+^https?:\/\/gab\.122\.gov\.cn\/eapp\/m\/sysquery\/adver$ - reject
+^https?:\/\/gab\.122\.gov\.cn\/eapp\/m\/sysquery - reject
+
+#------------------K-------------------#
+# > Keep
+
+^https?:\/\/api\.gotokeep\.com\/ads - reject
+^https?:\/\/api\.gotokeep\.com\/ads\/v\d\/ads\/preload - reject
+^https?:\/\/api\.gotokeep\.com\/anno\/v\d\/upgrade\/check - reject
+^https?:\/\/api\.gotokeep\.com\/cauchy\/user\/notice\/growth\/guide - reject-dict
+^https?:\/\/api\.gotokeep\.com\/kprime\/v\d\/popups\/primeGuide - reject
+^https?:\/\/api\.gotokeep\.com\/op-engine-webapp\/v\d\/ad/ - reject
+^https?:\/\/api\.gotokeep\.com\/search\/v\d\/default\/keyword\/list - reject
+^https?:\/\/api\.gotokeep\.com\/training\/box\/config - reject
+
+
+
+#------------------M-------------------#
+# > 美团
+^http:\/\/103\.37\.155\.60\/fetch - reject
+^https?:\/\/www\.meituan\.com\/api\/v\d\/appstatus\? - reject
+^https?:\/\/wmapi\.meituan\.com\/api\/v\d\/startpicture - reject
+^http:\/\/s3plus\.meituan\.net\/.*\/brandcpt-vedio\/.*\?time - reject
+^https?:\/\/p\d\.meituan\.net\/movie\/\w+\.jpg\?may_covertWebp - reject
+^https?:\/\/p\d\.meituan\.net\/wmbanner\/[A-Za-z0-9]+\.jpg - reject-200
+^https?:\/\/img\.meituan\.net\/(bizad|brandCpt)\/\w+\.(png|jpg) - reject
+^https?:\/\/peisongapi\.meituan\.com\/client\/getInitiateImage - reject-200
+^https?:\/\/p\d\.meituan\.net\/(bizad|wmbanner|brandCpt)\/\w+\.jpg - reject
+^https?:\/\/(s3plus|flowplus)\.meituan\.net\/v\d\/\w+\/linglong\/\w+\.(gif|jpg|mp4) - reject
+^https?:\/\/wmapi\.meituan\.com\/api\/v\d\/(openscreen\?ad|loadInfo\?|startpicture) - reject
+^https?:\/\/.*\.meituan\.com\/api\/v\d\/(openscreen\?ad|appstatus\?ad|loadInfo\?|startpicture) - reject
+
 #> 米游社
 ^https?:\/\/bbs-api\.miyoushe\.com\/apihub\/api\/getAppSplash - reject
 
 
-#------------------W-------------------#
+#------------------O-------------------#
+
+# QCloud
+#^https?:\/\/119\.29\.29\.29\/d - reject
+
+# QQmusic
+^http:\/\/182\.256\.116\.116\/d - reject
+
+#------------------P-------------------#
+# pinduoduo
+^http:\/\/101\.35\.204\.35\/d - reject
+^http:\/\/101\.35\.212\.35\/d - reject
+^http:\/\/114\.110\.96\.26\/d - reject
+^http:\/\/114\.110\.97\.97\/d - reject
+
+
+#--------------W---------------#
+#> 微信&QQ
+^https?:\/\/btrace\.qq\.com - reject-200
+^https?:\/\/news\.ssp\.qq\.com\/app - reject
+^https?:\/\/r\.inews\.qq\.com\/getSplash - reject
+^https?:\/\/us\.l\.qq\.com\/exapp\?spsa=\d - reject
+^https?:\/\/4gimg\.map\.qq\.com\/mwaSplash\/ - reject
+^https?:\/\/mlol\.qt\.qq\.com\/go\/recommend - reject
+^https?:\/\/mp\.weixin\.qq\.com\/mp\/getappmsgad - reject-dict
+^https?:\/\/mp\.weixin\.qq\.com\/mp\/cps_product_info - reject-200
+^https?:\/\/3gimg\.qq\.com\/tencentMapTouch\/splash\/ - reject-200
+^https?:\/\/qt\.qq\.com\/lua\/mengyou\/get_splash_screen_info - reject
+^https?:\/\/3gimg\.qq\.com\/tencentMapTouch\/app\/activity\/ - reject-200
+^https?:\/\/dns\.weixin\.qq\.com\/cgi-bin\/micromsg-bin\/newgetdns - reject
+^https?:\/\/short\.weixin\.qq\.com\/cgi-bin\/micromsg-bin\/getcdndns - reject
+^https?:\/\/dns\.weixin\.qq\.com\.cn\/cgi-bin\/micromsg-bin\/newgetdns - reject
+^https?:\/\/hkextshort\.weixin\.qq\.com\/cgi-bin\/micromsg-bin\/getcdndns - reject
+^https?:\/\/bgw\.xinyue\.qq\.com\/xyapi\.PageService\/GetIndexPopFlash - reject-200
+^https?:\/\/mp\.weixin\.qq\.com\/(s|mp)\/(ad_|advertisement|getappmsgad|report|appmsgreport|appmsgpicreport) - reject
+^https?:\/\/r\.inews\.qq\.com\/(getBannerAds|getNewsRemoteConfig|getSplash|searchHotCatList|upLoadLoc) - reject
+^https?:\/\/r\.inews\.qq\.com\/(adsBlacklist|getBannerAds|getFullScreenPic|getNewsRemoteConfig|getQQNewsRemoteConfig|searchHotCatList|upLoadLoc) - reject
+
+^https?:\/\/smusic\.app\.wechat\.com\/commonCgi\/advertisement\/get_orint_egg$ - reject-200
+
 
 # Weibo
 # refer: https://github.com/CNSRE/HTTPDNSLib-for-iOS
 ^http:\/\/api\.weibo\.cn\/2\/httpdns\/config - reject
 ^http:\/\/api\.weibo\.cn\/httpdns\/config - reject
 
+
 #--------------Y---------------#
-# ======= youtube ======= #
+# > youtube
 ^https?:\/\/(www|s)\.youtube\.com\/api\/stats\/ads - reject-200
 ^https?:\/\/(www|s)\.youtube\.com\/(pagead|ptracking) - reject-200
 ^https?:\/\/s\.youtube\.com\/api\/stats\/qoe\?adcontext - reject-200
 
+
+#--------------Z---------------#
+# > 航旅纵横
+^https?:\/\/discardrp\.umetrip\.com\/gateway\/api\/umetrip\/native - reject-200
+#> 知乎
+^https?:\/\/www\.zhihu\.com\/api\/v\d+\/search\/related_queries\/answer - reject-dict
+^https?:\/\/api\.zhihu\.com\/(notifications\/v\d\/count) - reject-dict
+^https?:\/\/api\.zhihu\.com\/ab\/api\/v1\/products\/zhihu\/platforms\/ios\/config - reject-dict
+^https?:\/\/api\.zhihu\.com\/ad-style-service\/request - reject-dict
+^https?:\/\/api\.zhihu\.com\/api\/v4\/ecom_data\/config - reject-dict
+^https?:\/\/api\.zhihu\.com\/commercial_api\/banners_v3\/app_topstory_banner - reject-dict
+^https?:\/\/api\.zhihu\.com\/content-distribution-core\/bubble\/common\/settings - reject-dict
+^https?:\/\/api\.zhihu\.com\/fringe\/ad - reject-dict
+^http:\/\/103\.41\.167\.237\/v2\/resolv - reject
 
 [Script]
 
@@ -123,9 +359,9 @@ http-response ^https?:\/\/(app\.bilibili\.com|grpc\.biliapi\.net)\/bilibili\.com
 # ～ BiliBili_哔哩哔哩_青少年弹窗@BiliUniverse
 http-response ^https?:\/\/(grpc\.biliapi\.net|app\.bilibili\.com)\/bilibili\.app\.interface\.v1\.Teenagers\/ModeStatus script-path=https://raw.githubusercontent.com/Charstr/script/main/loon/scripts/bilibili_proto_beta.js, requires-body=true, tag=青少年弹窗
 # ～ BiliBili_哔哩哔哩_UP主推荐广告[适配ipad端]@BiliUniverse
-http-response ^https?:\/\/(app\.bilibili\.com|grpc\.biliapi\.net)\/bilibili\.app\.(view|viewunite)\.v1\.View\/(View|TFInfo)$ script-path=https://raw.githubusercontent.com/Charstr/script/main/loon/scripts/bilibili_proto_beta.js, requires-body=true, tag=UP主推荐广告[适配ipadhostname = 端]
+http-response ^https?:\/\/(app\.bilibili\.com|grpc\.biliapi\.net)\/bilibili\.app\.(view|viewunite)\.v1\.View\/(View|TFInfo)$ script-path=https://raw.githubusercontent.com/Charstr/script/main/loon/scripts/bilibili_proto_beta.js, requires-body=true, tag=UP主推荐广告[适配ipad端]
 # ～ BiliBili_哔哩哔哩_动态综合页及视频页去广告@BiliUniverse
 http-response ^https?:\/\/(app\.bilibili\.com|grpc\.biliapi\.net)\/bilibili\.app\.dynamic\.v2\.Dynamic\/Dyn(All|Video)$ script-path=https://raw.githubusercontent.com/Charstr/script/main/loon/scripts/bilibili_proto_beta.js, requires-body=true, tag=动态综合页及视频页去广告
 
 [MITM]
-hostname = bbs-api.miyoushe.com, *.mcdn.bilivideo.com, upos-hz-mirrorakam.akamaized.net, www.google.cn, api.abema.io, *.uve.weibo.com, *weibo.com, *.weibo.cn, *.biliapi.net, *.biliapi.com, *.bilibili.com, *.bilibili.net, *.bilibili.cn, *.bilivideo.com, *.bilivideo.cn, *.biliintl.com, *.youtube.com
+hostname = *.mcdn.bilivideo.com:8082, *.mcdn.bilivideo.cn:8082,*.mcdn.bilivideo.com:4483,*.mcdn.bilivideo.cn:4483,upos-hz-mirrorakam.akamaized.net, *.httpdns.pro,101.35.204.35,103.37.155.60,110.76.8.150,114.110.96.26,119.29.29.98,119.29.29.99,180.76.76.112,182.256.116.116,dns.jd.com,dns.weixin.qq.com,short.weixin.qq.com,www.google.cn,short.weixin.qq.com,app.58.com,api.abema.io,grpc.biliapi.net,newclient.map.baidu.com,appwk.baidu.com,mbd.baidu.com,mime.baidu.com,pan.baidu.com,api.caiyunapp.com,cn-acs.m.cainiao.com,app-gw.csdn.net,cdn.poizon.com,app.dewu.com,api.douban.com,imgd.doubanio.com,frodo.douban.com,erebor.douban.com,fuss10.elemecdn.com,app.variflight.com,msg.umengcloud.com,api.m.jd.com,bdsp-x.jd.com,dsp-x.jd.com,jdread-api.jd.com,ms.jr.jd.com,gab.122.gov.cn,api.gotokeep.com,*.meituan.com,*.meituan.net,bbs-api.miyoushe.com,app.biliintl.com,passport.biliintl.com,btrace.qq.com,news.ssp.qq.com,r.inews.qq.com,mp.weixin.qq.com,3gimg.qq.com,dns.weixin.qq.com,short.weixin.qq.com,hkextshort.weixin.qq,bgw.xinyue.qq.com,smusic.app.wechat.com,god.gameyw.netease.com,www.youtube.com,s.youtube.com,discardrp.umetrip.com,www.zhihu.com,api.zhihu.com,app.biliapi.net,api.biliapi.com,api.biliapi.net,*.uve.weibo.com,*weibo.com,*.weibo.cn,app.bilibili.com, api.bilibili.com, api.live.bilibili.com, grpc.biliapi.net, www.bilibili.com, m.bilibili.com, live.bilibili.com
