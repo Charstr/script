@@ -9,7 +9,7 @@
 // @grant        GM_addStyle
 // @grant        GM_notification
 // ==/UserScript==
-
+// b站油猴脚本自用
 // 去掉叔叔去世时的全站黑白效果
 GM_addStyle("html, body { -webkit-filter: none !important; filter: none !important; }");
 
