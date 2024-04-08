@@ -3,7 +3,7 @@
   "rules": [
     {
       "domain": [
-        "cdn.usefathom.com"
+        "servd-anthropic-website.b-cdn.net"
       ],
       "domain_suffix": [
         "anthropic.com",

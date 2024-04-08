@@ -68,8 +68,10 @@ def main():
     baseurl = "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/"
     urls = [
         "Copilot/Copilot.list",
-        "Claude/Claude.list",
+        "Anthropic/Anthropic.list",
+        "Gemini/Gemini.list",
         "OpenAI/OpenAI.list",
+        "Scholar/Scholar.list",
         "Telegram/Telegram.list",
         "GlobalMedia/GlobalMedia.list",
         "Global/Global.list"
