@@ -1,16 +1,16 @@
-from urllib.parse import urljoin
-import requests
 import os
 import json
-import subprocess  # 导入subprocess库执行外部命令
+import urllib.request
+import ipaddress
+import subprocess
 
+# 定义下载链接
+AWAvenuerl = "https://raw.githubusercontent.com/TG-Twilight/AWAvenue-Ads-Rule/main/Filters/AWAvenue-Ads-Rule-Surge.txt"
 
-def download_file(url, folder):
-    filename = url.split('/')[-1]
+# 下载txt文件到指定路径
+def download_file(url, folder, filename):
     filepath = os.path.join(folder, filename)
-    response = requests.get(url)
-    with open(filepath, 'wb') as f:
-        f.write(response.content)
+    urllib.request.urlretrieve(url, filepath)
     return filepath
 
 def parse_list_file(filepath):
@@ -41,11 +41,34 @@ def parse_list_file(filepath):
 
     return rules
 
-def convert_to_json(rules, json_folder, filename):
-    filepath = os.path.join(json_folder, filename)
-    with open(filepath, 'w') as f:
-        json.dump(rules, f, indent=2)
+# 处理txt文件内容并转换为json格式
+def process_txt_to_json(filename):
+    rules = {"version": 1, "rules": []}
+    rule = {}
+    with open(filename, 'r', encoding='utf-8') as file:
+        for line in file:
+            line = line.strip()
+            if line.startswith('#') or line == '':
+                continue
+            if line.startswith('.'):
+                domain = line[1:]
+                try:
+                    # 检查是否是合法的 IP 地址或子网
+                    ipaddress.ip_network(domain, strict=False)
+                    rule.setdefault('ip_cidr', []).append(domain)
+                except ValueError:
+                    # 不是合法的 IP 地址，我们假设它是一个域
+                    rule.setdefault('domain_suffix', []).append(domain)
+        if rule:
+            rules['rules'].append(rule)
+    return rules
 
+# 将处理后的内容保存为json文件
+def save_json(data, filepath):
+    with open(filepath, 'w', encoding='utf-8') as file:
+        json.dump(data, file, indent=2, ensure_ascii=False)
+
+# 编译json文件为srs格式
 def compile_json_to_srs(json_filepath, srs_folder):
     # 获取不带扩展名的文件名
     basename = os.path.basename(json_filepath).replace('.json', '')
@@ -63,7 +86,7 @@ def compile_json_to_srs(json_filepath, srs_folder):
     else:
         print(f"Failed to compile {json_filepath}")
 
-
+# 主函数
 def main():
     baseurl = "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/"
     urls = [
@@ -89,19 +112,24 @@ def main():
         os.makedirs(srs_folder)
 
     for url in urls:
-        full_url = urljoin(baseurl, url)  # 拼接baseurl和url
+        full_url = os.path.join(baseurl, url)
         filename = os.path.basename(url)
         json_filename = filename.replace('.list', '.json')
-        filepath = download_file(full_url, download_folder)  # 使用拼接后的完整URL
+        filepath = download_file(full_url, download_folder, filename)
         rules = parse_list_file(filepath)
-        convert_to_json(rules, json_folder, json_filename)
-        # 编译json文件
-        json_filepath = os.path.join(json_folder, json_filename)  # json文件的路径
-        compile_json_to_srs(json_filepath, srs_folder)  # 执行编译
-        
+        json_filepath = os.path.join(json_folder, json_filename)
+        save_json(rules, json_filepath)
+        compile_json_to_srs(json_filepath, srs_folder)
+        # 删除下载的txt文件
         os.remove(filepath)
 
-    print("Conversion and compilation completed.")
+    # 处理 AWAvenue 规则文件
+    awa_filepath = download_file(AWAvenuerl, "jsons", "AWAvenue-Ads-Rule-Surge.txt")
+    awa_rules = process_txt_to_json(awa_filepath)
+    awa_json_filepath = os.path.join("jsons", "AWAvenue-Ads-Rule.json")
+    save_json(awa_rules, awa_json_filepath)
+    compile_json_to_srs(awa_json_filepath, "srs")
+    os.remove(awa_filepath)
 
 if __name__ == "__main__":
     main()
