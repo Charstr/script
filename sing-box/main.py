@@ -5,7 +5,7 @@ import ipaddress
 import subprocess
 
 # 定义下载链接
-AWAvenuerl = "https://raw.githubusercontent.com/TG-Twilight/AWAvenue-Ads-Rule/main/Filters/AWAvenue-Ads-Rule-Surge.txt"
+AWAvenuerl = "https://raw.githubusercontent.com/TG-Twilight/AWAvenue-Ads-Rule/main/AWAvenue-Ads-Rule.txt"
 
 # 下载txt文件到指定路径
 def download_file(url, folder, filename):
@@ -97,7 +97,8 @@ def main():
         "Scholar/Scholar.list",
         "Telegram/Telegram.list",
         "GlobalMedia/GlobalMedia.list",
-        "Global/Global.list"
+        "Global/Global.list",
+        "Apple/Apple.list"
         # Add more URLs if needed
     ]
     download_folder = "lists"
@@ -124,7 +125,7 @@ def main():
         os.remove(filepath)
 
     # 处理 AWAvenue 规则文件
-    awa_filepath = download_file(AWAvenuerl, "jsons", "AWAvenue-Ads-Rule-Surge.txt")
+    awa_filepath = download_file(AWAvenuerl, "jsons", "AWAvenue-Ads-Rule.txt")
     awa_rules = process_txt_to_json(awa_filepath)
     awa_json_filepath = os.path.join("jsons", "AWAvenue-Ads-Rule.json")
     save_json(awa_rules, awa_json_filepath)
