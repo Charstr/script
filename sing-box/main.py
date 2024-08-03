@@ -76,8 +76,10 @@ def compile_json_to_srs(json_filepath, srs_folder):
     srs_filepath = os.path.join(srs_folder, srs_filename)
     
     # 编译json文件到srs格式的命令
-    compile_command = f"./sing-box rule-set compile {json_filepath} -o {srs_filepath}"
-    
+    # py
+    # compile_command = f"./sing-box rule-set compile {json_filepath} -o {srs_filepath}"
+    compile_command = f"sing-box rule-set compile {json_filepath} -o {srs_filepath}"
+
     # 利用subprocess运行外部命令
     process = subprocess.run(compile_command, shell=True, check=True)
     # 检查命令是否成功执行
