@@ -812,7 +812,6 @@
         "ibeatsbydre.com",
         "ichat.co.in",
         "icloud-content.com.cn",
-        "icloud-sandbox.com",
         "idvd.eu",
         "igoshopping.net",
         "ikids.com",
@@ -1559,11 +1558,12 @@
         "wwwapplemusic.com",
         "applemusic.com",
         "apple-dns.net",
+        "cdn-apple.com",
         "digicert.com",
         "apple-cloudkit.com",
         "apple-livephotoskit.com",
         "apzones.com",
-        "cdn-apple.com"
+        "icloud-sandbox.com"
       ],
       "domain_keyword": [
         "apple-support.akadns.net",
