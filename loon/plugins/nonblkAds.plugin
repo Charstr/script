@@ -102,9 +102,9 @@ IP-CIDR6,2402:4e00:1200:ed00:0:9089:6dac:96b6/128,REJECT,no-resolve
 
 #--------------B---------------#
 # B站CDN重定向
-^https?:\/\/upos-hz-mirrorakam\.akamaized\.net https://upos-sz-mirrorali.bilivideo.com 307 
-^https?:\/\/(.*):(4480|4483|9102)\/upgcxcode\/ http://upos-sz-mirrorali.bilivideo.com 307
-^https?:\/\/(.*):(8000)\/v1\/resource\/ - reject
+#^https?:\/\/upos-hz-mirrorakam\.akamaized\.net https://upos-sz-mirrorali.bilivideo.com 307 
+#^https?:\/\/(.*):(4480|4483|9102)\/upgcxcode\/ http://upos-sz-mirrorali.bilivideo.com 307
+#^https?:\/\/(.*):(8000)\/v1\/resource\/ - reject
 
 
 #> bilibili
