@@ -15,6 +15,9 @@ IP-CIDR,186.76.76.200/32,REJECT,no-resolve
 
 # Bilibili
 HOST,httpdns.bilivideo.com,REJECT
+DOMAIN-KEYWORD,pcdn.biliapi.net,REJECT
+DOMAIN-KEYWORD,hw-sh-pcdn,REJECT
+DOMAIN-KEYWORD,ali-bj-pcdn,REJECT
 
 # JD
 DOMAIN,dns.jd.com,REJECT
