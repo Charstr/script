@@ -18,7 +18,9 @@ HOST,httpdns.bilivideo.com,REJECT
 DOMAIN-KEYWORD,pcdn.biliapi.net,REJECT
 DOMAIN-KEYWORD,hw-sh-pcdn,REJECT
 DOMAIN-KEYWORD,ali-bj-pcdn,REJECT
-
+HOST, data.bilibili.com, REJECT
+HOST, dataflow.bilibili.com,REJECT
+HOST, cm.bilibili.com,REJECT
 # JD
 DOMAIN,dns.jd.com,REJECT
 IP-CIDR,101.124.19.122/32,REJECT,no-resolve
