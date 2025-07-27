@@ -1,0 +1,75 @@
+#!/usr/bin/nft -f
+flush ruleset
+
+define ROUTING_MARK=7894  ## 和 sing-box 中定义的一致
+define TPROXY_MARK=0x1ed4 # 标记已经tp的流量
+define TPROXY_PORT=7893  ## 和 sing-box 中定义的一致
+define DEV_WORLD={ eth0 }
+
+table inet TProxy {
+	include "/etc/sing-box/tproxy/ip4_cn.nft"
+	include "/etc/sing-box/tproxy/ip6_cn.nft"
+	include "/etc/sing-box/tproxy/ip_reserved.nft"
+
+	chain prerouting {
+		type filter hook prerouting priority mangle -10; policy accept;
+		
+        ct state invalid drop
+        ct direction reply return    
+
+        fib daddr type local return
+
+        ip daddr @ip4_reserved return
+        ip6 daddr @ip6_reserved return
+
+        ip daddr @ip4_cn return
+        ip6 daddr @ip6_cn return
+
+        # 防止 TProxy 回环
+        meta l4proto { tcp, udp } th dport $TPROXY_PORT reject
+
+		# 透明代理规则
+        meta l4proto { tcp, udp } tproxy to :$TPROXY_PORT meta mark set $TPROXY_MARK accept
+	}
+
+	chain srcnat {
+		type nat hook postrouting priority srcnat; policy accept;
+        # 仅对 IPv4 进行 MASQUERADE
+        oifname $DEV_WORLD meta nfproto ipv4 masquerade
+	}
+
+	chain mangle_forward {
+		type filter hook forward priority mangle; policy accept;
+
+        # MSS Clamping
+        tcp flags syn tcp option maxseg size set rt mtu
+	}
+	
+	# Only for local mode
+	chain output {
+        type route hook output priority mangle; policy accept;
+        # 本地流量绕过
+        fib daddr type local return
+        
+        # 私有地址绕过
+        ip daddr @ip4_reserved return
+        ip6 daddr @ip6_reserved return
+
+        # 大陆IP绕过
+        ip daddr @ip4_cn return
+        ip6 daddr @ip6_cn return
+
+        # 标记路由绕过
+        meta mark $ROUTING_MARK return
+
+        # 设置重路由标记
+        meta l4proto { tcp, udp } meta mark set $TPROXY_MARK accept
+	}
+
+	chain quic_rj {
+		type filter hook input priority filter -10; policy accept;
+		# QUIC 阻断
+        udp dport { 443, 8443 } meta l4proto udp reject with icmpx type admin-prohibited
+	}
+
+}

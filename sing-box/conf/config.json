@@ -1,0 +1,672 @@
+{
+  "log": {
+    "disabled": true,
+    "level": "error",
+    "timestamp": true
+  },
+  "dns": {
+    "hosts": {
+      "dns.google": "8.8.8.8",
+      "cloudflare-dns.com": "1.1.1.1"
+    },
+    "servers": [
+      {
+        "tag": "dns_proxy",
+        "address": [
+          "https://cloudflare-dns.com/dns-query",
+          "https://dns.google/dns-query"
+        ],
+        "address_resolver": "alidns_udp",
+        "detour": "HongKong",
+        "strategy": "ipv4_only"
+      },
+      {
+        "tag": "dns_direct",
+        "address": [
+          "https://xxx/dns-query",
+          "https://xxxx/dns-query"
+        ],
+        "address_resolver": "alidns_udp",
+        "strategy": "ipv4_only",
+        "detour": "DIRECT"
+      },
+      {
+        "tag": "alidns_udp",
+        "address": "223.5.5.5",
+        "detour": "DIRECT"
+      },
+      {
+        "tag": "dnspod_udp",
+        "address": "119.29.29.29",
+        "detour": "DIRECT"
+      },
+      {
+        "tag": "dns_fakeip",
+        "address": "fakeip"
+      },
+      {
+        "tag": "dns_refused",
+        "address": "rcode://success"
+      }
+    ],
+    "rules": [
+      {
+        "domain_suffix": "in-addr.arpa",
+        "server": "dns_refused",
+        "disable_cache": true
+      },
+      {
+        "query_type": [
+          "HTTPS",
+          "SRV"
+        ],
+        "disable_cache": true,
+        "server": "dns_refused"
+      },
+      {
+        "domain_suffix": [
+          "mcdn.bilivideo.cn",
+          "szbdyd.com",
+          "data.bilibili.com",
+          "cm.bilibili.com",
+          "easytomessage.com"
+        ],
+        "domain_keyword": [
+          "mcdn",
+          "pcdn",
+          "stun",
+          "p2p",
+          "live-tracker"
+        ],
+        "domain_regex": [
+          "[a-zA-Z0-9-]+-pcdn-[a-zA-Z0-9-]+\\.biliapi\\.net",
+          "stun-(.*)\\.chat\\.bilibili\\.com",
+          "(.*)-p2p-(.*)\\.chat\\.bilibili\\.com",
+          "(.*)\\.szbdyd\\.com",
+          "(.*)-live-tracker-(.*)\\.chat\\.bilibili\\.com",
+          "(.*)p2plive(.*)\\.chat\\.douyucdn\\.cn",
+          "stun-(.*)\\.douyucdn\\.cn"
+        ],
+        "disable_cache": true,
+        "server": "dns_refused"
+      },
+      {
+        "outbound": "any",
+        "server": "dns_direct"
+      },
+      {
+        "outbound": "DIRECT",
+        "server": "dns_direct"
+      },
+      {
+        "clash_mode": "Global",
+        "rewrite_ttl": 0,
+        "disable_cache": true,
+        "server": "dns_fakeip"
+      },
+      {
+        "clash_mode": "Direct",
+        "server": "dns_direct"
+      },
+      {
+        "rule_set": [
+          "geosite-cn",
+          "geosite-geolocation-cn"
+        ],
+        "query_type": [
+          "A",
+          "AAAA"
+        ],
+        "server": "dns_direct"
+      },
+      {
+        "query_type": [
+          "A",
+          "AAAA"
+        ],
+        "rewrite_ttl": 0,
+        "disable_cache": true,
+        "server": "dns_fakeip"
+      },
+      {
+        "fallback_rules": [
+          {
+            "rule_set": "geoip-cn",
+            "invert": true
+          },
+          {
+            "match_all": true
+          }
+        ],
+        "query_type": [
+          "A",
+          "AAAA"
+        ],
+        "server": "dns_fakeip",
+        "disable_cache": true,
+        "rewrite_ttl": 0
+      }
+    ],
+    "final": "dns_proxy",
+    "independent_cache": true,
+    "reverse_mapping": true,
+    "lazy_cache": true,
+    "mapping_override": true,
+    "fakeip": {
+      "enabled": true,
+      "inet4_range": "198.18.0.0/16"
+    }
+  },
+  "inbounds": [
+    {
+      "type": "mixed",
+      "tag": "mixed-in",
+      "listen": "::",
+      "sniff": true,
+      "listen_port": 7890
+    },
+    {
+      "type": "socks",
+      "tag": "socks-in",
+      "listen": "::",
+      "listen_port": 35555,
+      "sniff": true,
+      "tcp_fast_open": true,
+      "sniff_override_destination": false,
+      "users": [
+        {
+          "username": "xx",
+          "password": "xxx"
+        }
+      ]
+    },
+    {
+      "type": "direct",
+      "tag": "dns-in",
+      "listen": "::",
+      "listen_port": 53
+    },
+    {
+      "type": "redirect",
+      "tag": "redirect-in",
+      "listen": "::",
+      "listen_port": 7892,
+      "sniff": true,
+      "sniff_override_destination": false
+    },
+    {
+      "type": "tproxy",
+      "tag": "tproxy-in",
+      "listen": "::",
+      "listen_port": 7893,
+      "sniff": true,
+      "sniff_override_destination": false
+    }
+  ],
+  "outbound_providers": [
+    {
+      "tag": "xdd",
+      "type": "remote",
+      "download_url": "xxx",
+      "download_interval": "24h",
+      "path": "./providers/proxy/xx.json",
+      "healthcheck_url": "http://cp.cloudflare.com/generate_204",
+      "healthcheck_interval": "30m0s",
+      "excludes": "(?i)网站|地址|剩余|到期|时间|有效|重置|ALI",
+      "download_detour": "DIRECT"
+    },
+    {
+      "tag": "xd",
+      "type": "remote",
+      "download_url": "xxx",
+      "download_interval": "24h",
+      "path": "./providers/proxy/xxx.json",
+      "healthcheck_url": "http://cp.cloudflare.com/generate_204",
+      "healthcheck_interval": "30m0s",
+      "download_ua": "sing-box",
+      "excludes": "(?i)网站|地址|剩余|到期|时间|有效|重置",
+      "download_detour": "DIRECT"
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "direct",
+      "tag": "DIRECT"
+    },
+    {
+      "type": "block",
+      "tag": "REJECT"
+    },
+    {
+      "type": "dns",
+      "tag": "dns-out"
+    },
+    {
+      "tag": "HongKong",
+      "type": "selector",
+      "providers": [
+        "twocarconfig",
+        "tkvconfig"
+      ],
+      "includes": [
+        "(?i)🇭🇰|HK|hk|香港|港|HongKong"
+      ]
+    },
+    {
+      "tag": "TaiWan",
+      "type": "selector",
+      "providers": [
+        "tkvconfig",
+        "twocarconfig"
+      ],
+      "includes": [
+        "(?i)🇹🇼|TW|tw|台湾|臺灣|台|Taiwan"
+      ]
+    },
+    {
+      "tag": "Singapore",
+      "type": "selector",
+      "providers": [
+        "twocarconfig",
+        "tkvconfig"
+      ],
+      "includes": [
+        "(?i)🇸🇬|SG|sg|新加坡|狮|Singapore"
+      ]
+    },
+    {
+      "tag": "Japan",
+      "type": "selector",
+      "providers": [
+        "twocarconfig",
+        "tkvconfig"
+      ],
+      "includes": [
+        "(?i)🇯🇵|JP|jp|日本|日|Japan"
+      ]
+    },
+    {
+      "tag": "USA",
+      "type": "selector",
+      "providers": [
+        "twocarconfig",
+        "tkvconfig"
+      ],
+      "includes": [
+        "(?i)🇺🇸|US|us|美国|美|United States"
+      ]
+    },
+    {
+      "tag": "PROXY",
+      "type": "selector",
+      "providers": [
+        "twocarconfig",
+        "tkvconfig"
+      ],
+      "includes": [
+        "(?i)Macao|🇭🇰|HK|hk|香港|港|HongKong|🇹🇼|TW|tw|台湾|臺灣|台|Taiwan|🇸🇬|SG|sg|新加坡|狮|Singapore"
+      ]
+    },
+    {
+      "tag": "Emby",
+      "type": "selector",
+      "providers": [
+        "twocarconfig",
+        "tkvconfig"
+      ],
+      "includes": [
+        "(?i)🇭🇰|HK|hk|香港|港|HongKong|🇸🇬|SG|sg|新加坡|狮|Singapore|🇯🇵|JP|jp|日本|日|Japan|🇺🇸|US|us|美国|美|United States"
+      ]
+    },
+    {
+      "tag": "Apple",
+      "type": "selector",
+      "outbounds": [
+        "DIRECT",
+        "TaiWan",
+        "HongKong",
+        "Japan",
+        "Singapore",
+        "USA"
+      ]
+    },
+    {
+      "tag": "Copilot",
+      "type": "selector",
+      "outbounds": [
+        "Japan",
+        "Singapore",
+        "USA"
+      ]
+    },
+    {
+      "tag": "GlobalMedia",
+      "type": "selector",
+      "outbounds": [
+        "HongKong",
+        "TaiWan",
+        "Singapore",
+        "USA",
+        "Japan"
+      ]
+    },
+    {
+      "tag": "Final",
+      "type": "selector",
+      "outbounds": [
+        "DIRECT",
+        "TaiWan",
+        "HongKong",
+        "Japan",
+        "Singapore",
+        "USA"
+      ]
+    }
+  ],
+  "route": {
+    "rule_set": [
+      {
+        "tag": "geosite-category-httpdns",
+        "type": "remote",
+        "format": "binary",
+        "path": "./providers/rules/geosite-category-httpdns.srs",
+        "url": "https://testingcf.jsdelivr.net/gh/SagerNet/sing-geosite@rule-set/geosite-category-httpdns-cn@ads.srs",
+        "download_detour": "DIRECT"
+      },
+      {
+        "tag": "geosite-geolocation-!cn",
+        "type": "remote",
+        "format": "binary",
+        "path": "./providers/rules/geosite-geolocation-!cn.srs",
+        "url": "https://testingcf.jsdelivr.net/gh/SagerNet/sing-geosite@rule-set/geosite-geolocation-!cn.srs",
+        "download_detour": "DIRECT"
+      },
+      {
+        "tag": "geosite-private",
+        "type": "remote",
+        "format": "binary",
+        "path": "./providers/rules/geosite-private.srs",
+        "url": "https://testingcf.jsdelivr.net/gh/SagerNet/sing-geosite@rule-set/geosite-private.srs",
+        "download_detour": "DIRECT"
+      },
+      {
+        "tag": "geosite-category-ads-all",
+        "type": "remote",
+        "format": "binary",
+        "path": "./providers/rules/geosite-category-ads-all.srs",
+        "url": "https://testingcf.jsdelivr.net/gh/SagerNet/sing-geosite@rule-set/geosite-category-ads-all.srs",
+        "download_detour": "DIRECT"
+      },
+      {
+        "tag": "geosite-category-public-tracker",
+        "type": "remote",
+        "format": "binary",
+        "path": "./providers/rules/geosite-category-public-tracker.srs",
+        "url": "https://testingcf.jsdelivr.net/gh/SagerNet/sing-geosite@rule-set/geosite-category-public-tracker.srs",
+        "download_detour": "DIRECT"
+      },
+      {
+        "tag": "geoip-cn",
+        "type": "remote",
+        "format": "binary",
+        "path": "./providers/rules/geoip-cn.srs",
+        "url": "https://testingcf.jsdelivr.net/gh/SagerNet/sing-geoip@rule-set/geoip-cn.srs",
+        "download_detour": "DIRECT"
+      },
+      {
+        "tag": "geosite-cn",
+        "type": "remote",
+        "format": "binary",
+        "path": "./providers/rules/geosite-cn.srs",
+        "url": "https://testingcf.jsdelivr.net/gh/SagerNet/sing-geosite@rule-set/geosite-cn.srs",
+        "download_detour": "DIRECT"
+      },
+      {
+        "tag": "geosite-geolocation-cn",
+        "type": "remote",
+        "format": "binary",
+        "path": "./providers/rules/geosite-geolocation-cn.srs",
+        "url": "https://testingcf.jsdelivr.net/gh/SagerNet/sing-geosite@rule-set/geosite-geolocation-cn.srs",
+        "download_detour": "DIRECT"
+      },
+      {
+        "tag": "geosite-bahamut",
+        "type": "remote",
+        "format": "binary",
+        "path": "./providers/rules/geosite-bahamut.srs",
+        "url": "https://testingcf.jsdelivr.net/gh/SagerNet/sing-geosite@rule-set/geosite-bahamut.srs",
+        "download_detour": "DIRECT"
+      },
+      {
+        "tag": "geosite-bilibili",
+        "type": "remote",
+        "format": "binary",
+        "path": "./providers/rules/geosite-bilibili.srs",
+        "url": "https://testingcf.jsdelivr.net/gh/SagerNet/sing-geosite@rule-set/geosite-bilibili.srs",
+        "download_detour": "DIRECT"
+      },
+      {
+        "tag": "geosite-twitter",
+        "type": "remote",
+        "format": "binary",
+        "path": "./providers/rules/geosite-twitter.srs",
+        "url": "https://testingcf.jsdelivr.net/gh/SagerNet/sing-geosite@rule-set/geosite-twitter.srs",
+        "download_detour": "DIRECT"
+      },
+      {
+        "tag": "geo-AWAvenue",
+        "type": "remote",
+        "format": "binary",
+        "path": "./providers/rules/AWAvenue-Ads-Rule.srs",
+        "url": "https://testingcf.jsdelivr.net/gh/Charstr/script/sing-box/srs/AWAvenue-Ads-Rule.srs",
+        "download_detour": "DIRECT"
+      },
+      {
+        "tag": "geosite-apple",
+        "type": "remote",
+        "format": "binary",
+        "path": "./providers/rules/geosite-apple.srs",
+        "url": "https://testingcf.jsdelivr.net/gh/Charstr/script/sing-box/srs/Apple.srs",
+        "download_detour": "DIRECT"
+      },
+      {
+        "tag": "geo-Copilot",
+        "type": "remote",
+        "format": "binary",
+        "path": "./providers/rules/geo-Copilot.srs",
+        "url": "https://testingcf.jsdelivr.net/gh/Charstr/script/sing-box/srs/Copilot.srs",
+        "download_detour": "DIRECT"
+      },
+      {
+        "tag": "geo-Anthropic",
+        "type": "remote",
+        "format": "binary",
+        "path": "./providers/rules/geo-Anthropic.srs",
+        "url": "https://testingcf.jsdelivr.net/gh/Charstr/script/sing-box/srs/Anthropic.srs",
+        "download_detour": "DIRECT"
+      },
+      {
+        "tag": "geo-Gemini",
+        "type": "remote",
+        "format": "binary",
+        "path": "./providers/rules/geo-Gemini.srs",
+        "url": "https://testingcf.jsdelivr.net/gh/Charstr/script/sing-box/srs/Gemini.srs",
+        "download_detour": "DIRECT"
+      },
+      {
+        "tag": "geo-OpenAI",
+        "type": "remote",
+        "format": "binary",
+        "path": "./providers/rules/geo-OpenAI.srs",
+        "url": "https://testingcf.jsdelivr.net/gh/Charstr/script/sing-box/srs/OpenAI.srs",
+        "download_detour": "DIRECT"
+      },
+      {
+        "tag": "geo-Telegram",
+        "type": "remote",
+        "format": "binary",
+        "path": "./providers/rules/geo-Telegram.srs",
+        "url": "https://testingcf.jsdelivr.net/gh/Charstr/script/sing-box/srs/Telegram.srs",
+        "download_detour": "DIRECT"
+      },
+      {
+        "tag": "geo-GlobalMedia",
+        "type": "remote",
+        "format": "binary",
+        "path": "./providers/rules/geo-GlobalMedia.srs",
+        "url": "https://testingcf.jsdelivr.net/gh/Charstr/script/sing-box/srs/GlobalMedia.srs",
+        "download_detour": "DIRECT"
+      },
+      {
+        "tag": "geo-Global",
+        "type": "remote",
+        "format": "binary",
+        "path": "./providers/rules/geo-Global.srs",
+        "url": "https://testingcf.jsdelivr.net/gh/Charstr/script/sing-box/srs/Global.srs",
+        "download_detour": "DIRECT"
+      }
+    ],
+    "rules": [
+      {
+        "inbound": "dns-in",
+        "outbound": "dns-out"
+      },
+      {
+        "protocol": "dns",
+        "outbound": "dns-out"
+      },
+      {
+        "clash_mode": "Global",
+        "outbound": "PROXY"
+      },
+      {
+        "clash_mode": "Direct",
+        "outbound": "DIRECT"
+      },
+      {
+        "type": "logical",
+        "mode": "or",
+        "rules": [
+          {
+            "port": 853
+          },
+          {
+            "network": "udp",
+            "port": 443
+          },
+          {
+            "protocol": [
+              "stun",
+              "quic"
+            ]
+          }
+        ],
+        "outbound": "REJECT"
+      },
+      {
+        "domain_suffix": [
+          "mcdn.bilivideo.cn",
+          "szbdyd.com",
+          "data.bilibili.com",
+          "cm.bilibili.com",
+          "easytomessage.com"
+        ],
+        "domain_keyword": [
+          "mcdn",
+          "pcdn",
+          "stun",
+          "p2p",
+          "live-tracker"
+        ],
+        "domain_regex": [
+          "[a-zA-Z0-9-]+-pcdn-[a-zA-Z0-9-]+\\.biliapi\\.net",
+          "stun-(.*)\\.chat\\.bilibili\\.com",
+          "(.*)-p2p-(.*)\\.chat\\.bilibili\\.com",
+          "(.*)\\.szbdyd\\.com",
+          "(.*)-live-tracker-(.*)\\.chat\\.bilibili\\.com",
+          "(.*)p2plive(.*)\\.chat\\.douyucdn\\.cn",
+          "stun-(.*)\\.douyucdn\\.cn"
+        ],
+        "outbound": "REJECT"
+      },
+      {
+        "rule_set": [
+          "geoip-cn",
+          "geosite-cn",
+          "geosite-geolocation-cn",
+          "geosite-private"
+        ],
+        "domain_suffix": "cn",
+        "outbound": "DIRECT"
+      },
+      {
+        "ip_cidr": [
+          "5.5.5.5"
+        ],
+        "ip_is_private": true,
+        "outbound": "DIRECT"
+      },
+      {
+        "rule_set": "geo-Telegram",
+        "outbound": "Singapore"
+      },
+      {
+        "rule_set": "geosite-twitter",
+        "outbound": "PROXY"
+      },
+      {
+        "rule_set": "geosite-apple",
+        "outbound": "Apple"
+      },
+      {
+        "rule_set": [
+          "geo-Copilot",
+          "geo-OpenAI",
+          "geo-Anthropic",
+          "geo-Gemini"
+        ],
+        "outbound": "Copilot"
+      },
+      {
+        "domain_keyword": [
+          "emby"
+        ],
+        "domain_suffix": [
+          "pilipiliultra.com",
+          "pilipili.club",
+          "embyplus.org",
+          "nebula-media.org"
+        ],
+        "outbound": "Emby"
+      },
+      {
+        "rule_set": "geosite-bahamut",
+        "outbound": "TaiWan"
+      },
+      {
+        "rule_set": "geo-GlobalMedia",
+        "outbound": "GlobalMedia"
+      },
+      {
+        "rule_set": "geo-Global",
+        "outbound": "PROXY"
+      }
+    ],
+    "default_mark": 7894,
+    "final": "Final",
+    "auto_detect_interface": false
+  },
+  "experimental": {
+    "clash_api": {
+      "external_controller": "0.0.0.0:9999",
+      "external_ui": "ui",
+      "secret": "",
+      "default_mode": "Rule"
+    },
+    "cache_file": {
+      "enabled": true,
+      "path": "cache.db",
+      "store_fakeip": false
+    }
+  }
+}
